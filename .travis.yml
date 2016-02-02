@@ -6,7 +6,7 @@ php:
   - 5.6
 
 before_install:
-  - sudo apt-get update
+  - sudo apt-get update -qq
   - sudo composer self-update
 
 install:
