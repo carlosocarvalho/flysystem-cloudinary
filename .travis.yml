@@ -5,9 +5,12 @@ php:
   - 5.5
   - 5.6
 
+before_install:
+  - sudo apt-get udpate
+  - sudo composer self-update
+
 install:
-  - travis_retry composer self-update
-  - travis_retry composer install --no-interaction
+  - sudo composer install
 
 script:
   - bin/phpunit
