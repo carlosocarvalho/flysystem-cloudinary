@@ -22,6 +22,6 @@ class CloudinaryAdapterTest extends PHPUnit_Framework_TestCase
   public function testFailure(){
 
       //$this->assertInstanceOf('RuntimeException', new Exception);
-      $this->assertInstanceOf(CloudinaryAdapter::class, new CloudinaryAdapter(['key'=>':key']));
+      $this->assertInstanceOf('CloudinaryAdapter', new CloudinaryAdapter(['key'=>':key']));
   }
 }
