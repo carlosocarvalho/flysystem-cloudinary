@@ -7,10 +7,10 @@ php:
 
 before_install:
   - sudo apt-get update -qq
-  - sudo composer self-update
+  - composer self-update
 
 install:
-  - sudo composer install
+  - composer install
 
 script:
   - bin/phpunit
