@@ -9,19 +9,21 @@
 
 include_once '/vendor/autoload.php';
 
-use CarlosOCarvalho\Flysystem\Cloudinary\CloudinaryAdapter;
+use CarlosOCarvalho\Flysystem\Cloudinary\CloudinaryAdapter as Adapter;
 
 class CloudinaryAdapterTest extends PHPUnit_Framework_TestCase
 {
 
-  function setbeStrictAboutChangesToGlobalState(){
+  private  $cloudinary;
 
+  function  setUp()
+  {
+     $config = ['key'=>':key'];
+     $this->cloudinary = new Adapter($config);
   }
 
-  public function warningCount(){}
-  public function testFailure(){
 
-      //$this->assertInstanceOf('RuntimeException', new Exception);
-      $this->assertInstanceOf('CloudinaryAdapter', new CloudinaryAdapter(['key'=>':key']));
+  public function testFailure(){
+      $this->assertInstanceOf('CarlosOCarvalho\Flysystem\Cloudinary\CloudinaryAdapter', $this->cloudinary );
   }
 }
