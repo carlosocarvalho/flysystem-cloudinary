@@ -25,5 +25,8 @@
         "name": "carlosocarvalho",
         "email": "carlosocarvalho.com.br@gmail.com"
     }],
-    "minimum-stability": "stable"
+    "minimum-stability": "stable",
+    "config": {
+        "bin-dir": "bin"
+    }
 }
