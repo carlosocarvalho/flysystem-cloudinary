@@ -7,3 +7,6 @@ php:
 
 install:
   - travis_retry composer update
+
+script:
+  - bin/phpunit
