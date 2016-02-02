@@ -24,5 +24,6 @@
     "authors": [{
         "name": "carlosocarvalho",
         "email": "carlosocarvalho.com.br@gmail.com"
-    }]
+    }],
+    "minimum-stability": "stable"
 }
