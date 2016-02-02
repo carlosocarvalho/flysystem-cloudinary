@@ -21,7 +21,7 @@
         "illuminate/html": "^5.0"
     },
     "authors": [{
-        "name": "Carlos O Carvalho",
+        "name": "carlosocarvalho",
         "email": "carlosocarvalho.com.br@gmail.com"
     }]
 }
