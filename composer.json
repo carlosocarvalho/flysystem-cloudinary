@@ -12,7 +12,8 @@
     },
     "autoload": {
         "psr-4": {
-            "CarlosOCarvalho\\Flysystem\\Cloudinary\\": "src/"
+            "CarlosOCarvalho\\Flysystem\\Cloudinary\\": "src/",
+            "CarlosOCarvalho\\Flysystem\\Cloudinary\\Test\\":"tests/"
         }
     },
     "require-dev": {
