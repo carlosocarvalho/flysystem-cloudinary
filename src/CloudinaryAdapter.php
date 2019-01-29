@@ -234,7 +234,7 @@ class CloudinaryAdapter implements AdapterInterface
      *
      * @return array
      */
-    public function listContents($directory = '', $recursive = false)
+    public function listContents($directory = '', $hasRecursive = false)
     {
         // get resources array
         $resources = ((array) $this->api->resources([
