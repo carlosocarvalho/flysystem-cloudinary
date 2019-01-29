@@ -25,12 +25,12 @@ class CloudinaryAdapter implements AdapterInterface
     /**
      * Constructor
      * Sets configuration, and dependency Cloudinary Api.
-     * @param array $config Cloudinary configuration
+     * @param array $options Cloudinary configuration
      * @param Api   $api    Cloudinary Api instance
      */
-    public function __construct(array $config)
+    public function __construct(array $options)
     {
-        Cloudinary::config($config);
+        Cloudinary::config($options);
         $this->api = new Api;
     }
     /**
@@ -40,17 +40,17 @@ class CloudinaryAdapter implements AdapterInterface
      *
      * @param string $path
      * @param string $contents
-     * @param Config $config   Config object
+     * @param Config $options   Config object
      *
      * @return array|false false on failure file meta data on success
      */
-    public function write($path, $contents, Config $config)
+    public function write($path, $contents, Config $options)
     {
         // 1. Save to temporary local file -- it will be destroyed automatically
         $tempfile = tmpfile();
         fwrite($tempfile, $contents);
         // 2. Use Cloudinary to send
-        $uploaded_metadata = $this->writeStream($path, $tempfile, $config);
+        $uploaded_metadata = $this->writeStream($path, $tempfile, $options);
         return $uploaded_metadata;
     }
     /**
@@ -58,14 +58,14 @@ class CloudinaryAdapter implements AdapterInterface
      *
      * @param string   $path
      * @param resource $resource
-     * @param Config   $config   Config object
+     * @param Config   $options   Config object
      *
      * @return array|false false on failure file meta data on success
      */
-    public function writeStream($path, $resource, Config $config)
+    public function writeStream($path, $resource, Config $options)
     {
-        $resource_metadata = stream_get_meta_data($resource);
-              $uploaded_metadata = Uploader::upload($resource_metadata['uri'], ['public_id' => $path]);
+        $resourceMetadata = stream_get_meta_data($resource);
+              $uploaded_metadata = Uploader::upload($resourceMetadata['uri'], ['public_id' => $path]);
         return $uploaded_metadata;
     }
     /**
@@ -74,13 +74,13 @@ class CloudinaryAdapter implements AdapterInterface
      *
      * @param string $path
      * @param string $contents
-     * @param Config $config   Config object
+     * @param Config $options   Config object
      *
      * @return array|false false on failure file meta data on success
      */
-    public function update($path, $contents, Config $config)
+    public function update($path, $contents, Config $options)
     {
-        return $this->write($path, $contents, $config);
+        return $this->write($path, $contents, $options);
     }
     /**
      * Update a file using a stream.
@@ -88,13 +88,13 @@ class CloudinaryAdapter implements AdapterInterface
      *
      * @param string   $path
      * @param resource $resource
-     * @param Config   $config   Config object
+     * @param Config   $options   Config object
      *
      * @return array|false false on failure file meta data on success
      */
-    public function updateStream($path, $resource, Config $config)
+    public function updateStream($path, $resource, Config $options)
     {
-        return $this->writeStream($path, $resource, $config);
+        return $this->writeStream($path, $resource, $options);
     }
     /**
      * Rename a file.
@@ -107,11 +107,11 @@ class CloudinaryAdapter implements AdapterInterface
      */
     public function rename($path, $newpath)
     {
-        $pathinfo = pathinfo($path);
-        if ($pathinfo['dirname'] != '.') {
-            $path_remote = $pathinfo['dirname'] . '/' . $pathinfo['filename'];
+        $pathInfo = pathinfo($path);
+        if ($pathInfo['dirname'] != '.') {
+            $pathRemote = $pathInfo['dirname'] . '/' . $pathInfo['filename'];
         } else {
-            $path_remote = $pathinfo['filename'];
+            $pathRemote = $pathInfo['filename'];
         }
         $newpathinfo = pathinfo($newpath);
         if ($newpathinfo['dirname'] != '.') {
@@ -119,7 +119,7 @@ class CloudinaryAdapter implements AdapterInterface
         } else {
             $newpath_remote = $newpathinfo['filename'];
         }
-        $result = Uploader::rename($path_remote, $newpath_remote);
+        $result = Uploader::rename($pathRemote, $newpath_remote);
         return $result['public_id'] == $newpathinfo['filename'];
     }
     /**
@@ -169,11 +169,11 @@ class CloudinaryAdapter implements AdapterInterface
      * Just keep swimming.
      *
      * @param string $dirname directory name
-     * @param Config $config
+     * @param Config $options
      *
      * @return array|false
      */
-    public function createDir($dirname, Config $config)
+    public function createDir($dirname, Config $options)
     {
         return ['path' => $dirname];
     }
