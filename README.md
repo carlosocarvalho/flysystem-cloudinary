@@ -40,7 +40,7 @@ $filesystem->listContents()
 
 ### For use in laravel
 
-[https://github.com/carlosocarvalho/laravel-storage-cloudinary](Laravel Clousdina)
+[https://github.com/carlosocarvalho/laravel-storage-cloudinary]
 
 
  
