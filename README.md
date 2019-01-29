@@ -29,3 +29,19 @@ $filesystem = new League\Flysystem\Filesystem( $container );
 
 ```
 
+## List contents and others actions use Filesystem api
+
+```php
+
+$filesystem->listContents()
+
+```
+
+
+### For use in laravel
+
+[https://github.com/carlosocarvalho/laravel-storage-cloudinary](Laravel Clousdina)
+
+
+ 
+ 

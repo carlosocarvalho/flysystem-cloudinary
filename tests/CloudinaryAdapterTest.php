@@ -7,7 +7,7 @@
  */
 
 
-include_once '/vendor/autoload.php';
+include_once __DIR__ .'/../vendor/autoload.php';
 
 use CarlosOCarvalho\Flysystem\Cloudinary\CloudinaryAdapter as Adapter;
 
@@ -26,4 +26,6 @@ class CloudinaryAdapterTest extends PHPUnit_Framework_TestCase
   public function testFailure(){
       $this->assertInstanceOf('CarlosOCarvalho\Flysystem\Cloudinary\CloudinaryAdapter', $this->cloudinary );
   }
+
+
 }
