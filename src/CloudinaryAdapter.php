@@ -246,7 +246,7 @@ class CloudinaryAdapter implements AdapterInterface
                 'type' => 'upload',
                 'prefix' => $directory,
                 'max_results' => 500,
-                'next_cursor' => $response['next_cursor'] ?? null,
+                'next_cursor' => isset($response['next_cursor']) ? $response['next_cursor'] : null,
             ]);
             $resources = array_merge($resources, $response['resources']);
         } while (array_key_exists('next_cursor', $response));
