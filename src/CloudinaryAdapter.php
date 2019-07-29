@@ -349,4 +349,19 @@ class CloudinaryAdapter implements AdapterInterface
         $size = $resource['bytes'];
         return compact('size');
     }
+    
+     /**
+     * Get the URL of an image with optional transformation parameters
+     *
+     * @param  string|array $path
+     * @return string
+     */
+    public function getUrl($path)
+    {
+        if (is_array($path)) {
+            return cloudinary_url($path['public_id'], $path['options']);
+        }
+        return cloudinary_url($path);
+    }
+
 }
