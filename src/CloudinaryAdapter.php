@@ -9,6 +9,7 @@ use Cloudinary\Uploader;
 use League\Flysystem\Config;
 use League\Flysystem\AdapterInterface;
 use League\Flysystem\Adapter\Polyfill\NotSupportingVisibilityTrait;
+
 /**
  *
  */
@@ -236,11 +237,20 @@ class CloudinaryAdapter implements AdapterInterface
      */
     public function listContents($directory = '', $hasRecursive = false)
     {
+        $resources = [];
+
         // get resources array
-        $resources = ((array) $this->api->resources([
-            'type' => 'upload',
-            'prefix' => $directory
-        ])['resources']);
+        $response = null;
+        do {
+            $response = (array) $this->api->resources([
+                'type' => 'upload',
+                'prefix' => $directory,
+                'max_results' => 500,
+                'next_cursor' => isset($response['next_cursor']) ? $response['next_cursor'] : null,
+            ]);
+            $resources = array_merge($resources, $response['resources']);
+        } while (array_key_exists('next_cursor', $response));
+
         // parse resourses
         foreach ($resources as $i => $resource) {
             $resources[$i] = $this->prepareResourceMetadata($resource);
