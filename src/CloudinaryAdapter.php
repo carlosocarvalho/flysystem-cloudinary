@@ -160,7 +160,7 @@ class CloudinaryAdapter implements AdapterInterface
      */
     public function deleteDir($dirname)
     {
-        $response = $this->api->delete_resources_by_prefix($dirname);
+        $this->api->delete_resources_by_prefix($dirname);
         return true;
     }
     /**
