@@ -48,11 +48,11 @@ class CloudinaryAdapter implements AdapterInterface
     public function write($path, $contents, Config $options)
     {
         // 1. Save to temporary local file -- it will be destroyed automatically
-        $tempfile = tmpfile();
-        fwrite($tempfile, $contents);
+        $tempFile = tmpfile();
+        fwrite($tempFile, $contents);
         // 2. Use Cloudinary to send
-        $uploaded_metadata = $this->writeStream($path, $tempfile, $options);
-        return $uploaded_metadata;
+        $uploadedMetadata = $this->writeStream($path, $tempFile, $options);
+        return $uploadedMetadata;
     }
     /**
      * Write a new file using a stream.
@@ -66,8 +66,8 @@ class CloudinaryAdapter implements AdapterInterface
     public function writeStream($path, $resource, Config $options)
     {
         $resourceMetadata = stream_get_meta_data($resource);
-              $uploaded_metadata = Uploader::upload($resourceMetadata['uri'], ['public_id' => $path]);
-        return $uploaded_metadata;
+              $uploadedMetadata = Uploader::upload($resourceMetadata['uri'], ['public_id' => $path]);
+        return $uploadedMetadata;
     }
     /**
      * Update a file.
@@ -114,14 +114,14 @@ class CloudinaryAdapter implements AdapterInterface
         } else {
             $pathRemote = $pathInfo['filename'];
         }
-        $newpathinfo = pathinfo($newpath);
-        if ($newpathinfo['dirname'] != '.') {
-            $newpath_remote = $newpathinfo['dirname'] . '/' . $newpathinfo['filename'];
+        $newPathInfo = pathinfo($newpath);
+        if ($newPathInfo['dirname'] != '.') {
+            $newPathRemote = $newPathInfo['dirname'] . '/' . $newPathInfo['filename'];
         } else {
-            $newpath_remote = $newpathinfo['filename'];
+            $newPathRemote = $newPathInfo['filename'];
         }
-        $result = Uploader::rename($pathRemote, $newpath_remote);
-        return $result['public_id'] == $newpathinfo['filename'];
+        $result = Uploader::rename($pathRemote, $newPathRemote);
+        return $result['public_id'] == $newPathInfo['filename'];
     }
     /**
      * Copy a file.
