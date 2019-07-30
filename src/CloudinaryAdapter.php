@@ -3,7 +3,7 @@
 namespace CarlosOCarvalho\Flysystem\Cloudinary;
 
 use Exception;
-use Cloudinary;
+use Cloudinary as ClDriver;
 use Cloudinary\Api as Api;
 use Cloudinary\Uploader;
 use League\Flysystem\Config;
@@ -31,7 +31,7 @@ class CloudinaryAdapter implements AdapterInterface
      */
     public function __construct(array $options)
     {
-        Cloudinary::config($options);
+        ClDriver::config($options);
         $this->api = new Api;
     }
     /**
