@@ -65,8 +65,21 @@ class CloudinaryAdapter implements AdapterInterface
      */
     public function writeStream($path, $resource, Config $options)
     {
+        $public_id = $options->has('public_id') ?
+            $options->get('public_id') : $path;
+
+        $resource_type = $options->has('resource_type') ?
+            $options->get('resource_type') : 'auto';
+
         $resourceMetadata = stream_get_meta_data($resource);
-              $uploadedMetadata = Uploader::upload($resourceMetadata['uri'], ['public_id' => $path]);
+        $uploadedMetadata = Uploader::upload(
+            $resourceMetadata['uri'],
+            [
+                'public_id' => $public_id,
+                'resource_type' => $resource_type,
+            ]
+        );
+
         return $uploadedMetadata;
     }
     /**
@@ -359,7 +372,7 @@ class CloudinaryAdapter implements AdapterInterface
         $size = $resource['bytes'];
         return compact('size');
     }
-    
+
      /**
      * Get the URL of an image with optional transformation parameters
      *
