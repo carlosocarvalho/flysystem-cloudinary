@@ -1,6 +1,6 @@
 {
     "name": "carlosocarvalho/flysystem-cloudinary",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "description": "Flysystem adapter for Cloudinary",
     "license": "MIT",
     "tags": ["cloudinary", "thephpleague", "adpater"],
