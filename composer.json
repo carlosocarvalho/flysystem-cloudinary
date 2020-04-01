@@ -2,11 +2,12 @@
     "name": "carlosocarvalho/flysystem-cloudinary",
     "description": "Flysystem adapter for Cloudinary",
     "license": "MIT",
+    "keywords": ["cloudinary", "flysystem"],
+    "homepage": "http://carlosocarvalho.github.io/flysystem-cloudinary",
     "require": {
         "php": ">=5.4.0",
         "cloudinary/cloudinary_php": "^1.3",
         "league/flysystem": "^1.0"
-
     },
     "autoload": {
         "psr-4": {
