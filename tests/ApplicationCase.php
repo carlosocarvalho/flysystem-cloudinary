@@ -3,7 +3,7 @@
 namespace CarlosOCarvalho\Flysystem\Cloudinary\Test;
 
 
-require __DIR__.'/Helpers.php';
+
 include_once __DIR__ .'/../vendor/autoload.php';
 
 use CarlosOCarvalho\Flysystem\Cloudinary\CloudinaryAdapter as Adapter;

@@ -9,6 +9,7 @@ use Cloudinary\Uploader;
 use League\Flysystem\Config;
 use League\Flysystem\AdapterInterface;
 use League\Flysystem\Adapter\Polyfill\NotSupportingVisibilityTrait;
+use League\Flysystem\FileNotFoundException;
 
 /**
  *
@@ -233,11 +234,7 @@ class CloudinaryAdapter implements AdapterInterface
      */
     public function readStream($path)
     {
-        try {
-            $stream = fopen(cloudinary_url($path), 'r');
-        } catch (Exception $e) {
-            return false;
-        }
+        $stream = fopen(cloudinary_url($path), 'r');
         return compact('stream', 'path');
     }
     /**

@@ -11,32 +11,20 @@ class CloudinaryAdapterTest extends ApplicationCase
 {
 
    
-
+    
     public static function setUpBeforeClass(): void
     {
-
-        self::$config = [
-            'api_key' => '788386319666942',
-            'api_secret' => 'Uu1UjdDROM4m6lq80l7-9Zqt8Mg',
-            'cloud_name' => 'carlosocarvalho',
-            "secure_distribution" => null,
-            "private_cdn" => false,
-            "cname" => null
-        ];
+        parent::setUpBeforeClass();
         self::$image_id = md5(strtotime('now')); //sprintf('uploads/%s.png', md5(strtotime('now')));
-        self::$cloudinary = new Adapter(self::$config);
-        self::$adapter = new Filesystem(self::$cloudinary);
+       
     }
 
 
-    public static function tearDownAfterClass(): void
-    {
-    //    self::$adapter->delete(sprintf('uploads/%s', self::$image_id));
-    //    self::$adapter->delete(sprintf('uploads/renamed-%s', self::$image_id));
-    //    self::$adapter->delete(sprintf('uploads/update-%s', self::$image_id));
-    }
-
-
+  
+    /**
+     * Validate instance type is Class Core
+     * @return void
+     */
     public function test_valid_instance()
     {
         $cloudinary = new Adapter(self::$config);
@@ -46,7 +34,7 @@ class CloudinaryAdapterTest extends ApplicationCase
 
     /**
      * @depends test_valid_instance
-     *
+     * Upload success file on api 
      * @return void
      */
    
@@ -65,7 +53,10 @@ class CloudinaryAdapterTest extends ApplicationCase
     }
 
     
-
+    /**
+     * Read on file of api
+     * @return void
+     */
     public function test_read_file()
     {   
         $adapter = self::$adapter;
@@ -79,10 +70,9 @@ class CloudinaryAdapterTest extends ApplicationCase
 
     /**
      * @depends test_success_upload_file
-     *
      * @return void
      */
-    public function test_rename_file(){
+    public function test_rename_with_folder(){
        
         $adapter = self::$adapter;
         $id = sprintf('uploads/origin-%s', self::$image_id);
@@ -95,8 +85,28 @@ class CloudinaryAdapterTest extends ApplicationCase
         
     }
 
-    
+    /**
+     * @depends test_success_upload_file
+     * @return void
+     */
+    public function test_rename_file(){
+       
+        $adapter = self::$adapter;
+        $id = sprintf('uploads-origin-%s', self::$image_id);
+        $renamedId = sprintf('uploads-renamed-%s', self::$image_id);
+        $up = $adapter->write($id, $this->getContentFile());
+        $this->assertTrue($up);
+        $adapter->rename($id, $renamedId);
+        $this->assertTrue($adapter->has($renamedId));
+        $adapter->delete($renamedId);
+        
+    }
 
+    
+    /**
+     * UpdateFile change name file 
+     * @return void
+     */
     public function test_update_file()
     {
         $adapter = self::$adapter;
@@ -110,7 +120,10 @@ class CloudinaryAdapterTest extends ApplicationCase
 
 
    
-    
+    /**
+     * DeleteFile remove file by id registered
+     * @return void
+     */
     public function test_delete_file()
     {
         $adapter = self::$adapter;
@@ -121,7 +134,10 @@ class CloudinaryAdapterTest extends ApplicationCase
         
         
     }
-
+    /**
+     * CopyFile  
+     * @return void
+     */
     public function test_copy_file()
     {
         $adapter = self::$adapter;
@@ -134,11 +150,4 @@ class CloudinaryAdapterTest extends ApplicationCase
         $adapter->delete($id);
     }
 
-   
-    
-    
-    
-
-
-    
 }

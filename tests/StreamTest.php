@@ -8,15 +8,19 @@ use League\Flysystem\Filesystem;
 class StreamTest extends ApplicationCase
 {
 
-    
+
     public static function setUpBeforeClass(): void
     {
-      self::$image_id = md5(strtotime('now')); //sprintf('uploads/%s.png', md5(strtotime('now')));
-       
+        parent::setUpBeforeClass();
+        self::$image_id = md5(strtotime('now')); //sprintf('uploads/%s.png', md5(strtotime('now')));
+
     }
 
+    /**
+     * @return void
+     */
     public function test_stream_file()
-    {   
+    {
         $adapter = self::$adapter;
         $id = sprintf('uploads/-stream-%s', self::$image_id);
         $up = $adapter->write($id, $this->getContentFile());
@@ -29,21 +33,24 @@ class StreamTest extends ApplicationCase
 
     /**
      * @ex
-     *
+     * 
      * @return void
      */
     public function test_failure_stream_file()
-    {   
-        try{
+    {
+        try {
             $adapter = self::$adapter;
             $id = sprintf('uploads/-stream-%s', self::$image_id);
             $stream = $adapter->readStream($id);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             $this->assertTrue(true);
         }
     }
 
-
+    /**
+     *
+     * @return void
+     */
     public function test_update_stream_file()
     {
         $adapter = self::$adapter;
@@ -55,8 +62,5 @@ class StreamTest extends ApplicationCase
         $this->assertTrue($adapter->updateStream($id, $stream));
         fclose($stream);
         $adapter->delete($id);
-        
     }
-
-
 }

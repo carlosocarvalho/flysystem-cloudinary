@@ -9,7 +9,10 @@ class DirectoryStreamTest extends ApplicationCase
 {
 
    
-
+    /**
+     *
+     * @return void
+     */
     public function test_list_container()
     {
         $adapter = self::$adapter;
@@ -26,7 +29,10 @@ class DirectoryStreamTest extends ApplicationCase
         
     }
 
-
+    /**
+     *
+     * @return void
+     */
     public function test_create_and_delete_dir()
     {
         $adapter = self::$adapter;
