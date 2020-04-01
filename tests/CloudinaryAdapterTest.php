@@ -6,6 +6,7 @@ use CarlosOCarvalho\Flysystem\Cloudinary\CloudinaryAdapter as Adapter;
 use CarlosOCarvalho\Flysystem\Cloudinary\Test\ApplicationCase;
 use League\Flysystem\File;
 use League\Flysystem\Filesystem;
+use RuntimeException;
 
 class CloudinaryAdapterTest extends ApplicationCase
 {
@@ -191,7 +192,22 @@ class CloudinaryAdapterTest extends ApplicationCase
         $adapter->delete($id);
         
     }
-
+    
+    /**
+     * @ex
+     *
+     * @return void
+     */
+    public function test_failure_stream_file()
+    {   
+        try{
+            $adapter = self::$adapter;
+            $id = sprintf('uploads/-stream-%s', self::$image_id);
+            $stream = $adapter->readStream($id);
+        }catch(\Exception $e){
+            $this->assertTrue(true);
+        }
+    }
     public function getContentFile(){
         return file_get_contents(self::IMAGE);
     }
