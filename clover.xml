@@ -1,46 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1585766096">
-  <project timestamp="1585766096">
+<coverage generated="1585768614">
+  <project timestamp="1585768614">
     <package name="CarlosOCarvalho\Flysystem\Cloudinary">
       <file name="/Users/carloscarvalho/projects/php/flysystem-cloudinary/src/CloudinaryAdapter.php">
         <class name="CarlosOCarvalho\Flysystem\Cloudinary\CloudinaryAdapter" namespace="CarlosOCarvalho\Flysystem\Cloudinary">
-          <metrics complexity="36" methods="24" coveredmethods="12" conditionals="0" coveredconditionals="0" statements="80" coveredstatements="38" elements="104" coveredelements="50"/>
+          <metrics complexity="36" methods="24" coveredmethods="14" conditionals="0" coveredconditionals="0" statements="80" coveredstatements="49" elements="104" coveredelements="63"/>
         </class>
         <line num="32" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="1"/>
         <line num="34" type="stmt" count="1"/>
         <line num="35" type="stmt" count="1"/>
         <line num="36" type="stmt" count="1"/>
-        <line num="48" type="method" name="write" visibility="public" complexity="1" crap="1" count="1"/>
-        <line num="51" type="stmt" count="1"/>
-        <line num="52" type="stmt" count="1"/>
-        <line num="54" type="stmt" count="1"/>
-        <line num="55" type="stmt" count="1"/>
-        <line num="66" type="method" name="writeStream" visibility="public" complexity="3" crap="3" count="1"/>
-        <line num="68" type="stmt" count="1"/>
-        <line num="69" type="stmt" count="1"/>
-        <line num="71" type="stmt" count="1"/>
-        <line num="72" type="stmt" count="1"/>
-        <line num="74" type="stmt" count="1"/>
-        <line num="75" type="stmt" count="1"/>
-        <line num="76" type="stmt" count="1"/>
-        <line num="78" type="stmt" count="1"/>
-        <line num="79" type="stmt" count="1"/>
-        <line num="83" type="stmt" count="1"/>
+        <line num="48" type="method" name="write" visibility="public" complexity="1" crap="1" count="2"/>
+        <line num="51" type="stmt" count="2"/>
+        <line num="52" type="stmt" count="2"/>
+        <line num="54" type="stmt" count="2"/>
+        <line num="55" type="stmt" count="2"/>
+        <line num="66" type="method" name="writeStream" visibility="public" complexity="3" crap="3" count="2"/>
+        <line num="68" type="stmt" count="2"/>
+        <line num="69" type="stmt" count="2"/>
+        <line num="71" type="stmt" count="2"/>
+        <line num="72" type="stmt" count="2"/>
+        <line num="74" type="stmt" count="2"/>
+        <line num="75" type="stmt" count="2"/>
+        <line num="76" type="stmt" count="2"/>
+        <line num="78" type="stmt" count="2"/>
+        <line num="79" type="stmt" count="2"/>
+        <line num="83" type="stmt" count="2"/>
         <line num="95" type="method" name="update" visibility="public" complexity="1" crap="2" count="0"/>
         <line num="97" type="stmt" count="0"/>
         <line num="109" type="method" name="updateStream" visibility="public" complexity="1" crap="2" count="0"/>
         <line num="111" type="stmt" count="0"/>
-        <line num="122" type="method" name="rename" visibility="public" complexity="3" crap="12" count="0"/>
-        <line num="124" type="stmt" count="0"/>
-        <line num="125" type="stmt" count="0"/>
-        <line num="126" type="stmt" count="0"/>
+        <line num="122" type="method" name="rename" visibility="public" complexity="3" crap="3.07" count="1"/>
+        <line num="124" type="stmt" count="1"/>
+        <line num="125" type="stmt" count="1"/>
+        <line num="126" type="stmt" count="1"/>
         <line num="128" type="stmt" count="0"/>
-        <line num="130" type="stmt" count="0"/>
-        <line num="131" type="stmt" count="0"/>
-        <line num="132" type="stmt" count="0"/>
+        <line num="130" type="stmt" count="1"/>
+        <line num="131" type="stmt" count="1"/>
+        <line num="132" type="stmt" count="1"/>
         <line num="134" type="stmt" count="0"/>
-        <line num="136" type="stmt" count="0"/>
-        <line num="137" type="stmt" count="0"/>
+        <line num="136" type="stmt" count="1"/>
+        <line num="137" type="stmt" count="1"/>
         <line num="148" type="method" name="copy" visibility="public" complexity="2" crap="6" count="0"/>
         <line num="150" type="stmt" count="0"/>
         <line num="151" type="stmt" count="0"/>
@@ -48,16 +48,16 @@
         <line num="161" type="method" name="delete" visibility="public" complexity="2" crap="6" count="0"/>
         <line num="163" type="stmt" count="0"/>
         <line num="164" type="stmt" count="0"/>
-        <line num="174" type="method" name="deleteDir" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="176" type="stmt" count="0"/>
-        <line num="177" type="stmt" count="0"/>
-        <line num="190" type="method" name="createDir" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="192" type="stmt" count="0"/>
-        <line num="206" type="method" name="has" visibility="public" complexity="2" crap="2" count="1"/>
-        <line num="209" type="stmt" count="1"/>
-        <line num="210" type="stmt" count="1"/>
-        <line num="211" type="stmt" count="1"/>
-        <line num="213" type="stmt" count="1"/>
+        <line num="174" type="method" name="deleteDir" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="176" type="stmt" count="1"/>
+        <line num="177" type="stmt" count="1"/>
+        <line num="190" type="method" name="createDir" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="192" type="stmt" count="1"/>
+        <line num="206" type="method" name="has" visibility="public" complexity="2" crap="2" count="2"/>
+        <line num="209" type="stmt" count="2"/>
+        <line num="210" type="stmt" count="2"/>
+        <line num="211" type="stmt" count="2"/>
+        <line num="213" type="stmt" count="2"/>
         <line num="222" type="method" name="read" visibility="public" complexity="1" crap="2" count="0"/>
         <line num="224" type="stmt" count="0"/>
         <line num="225" type="stmt" count="0"/>
@@ -110,9 +110,9 @@
         <line num="384" type="stmt" count="0"/>
         <line num="385" type="stmt" count="0"/>
         <line num="387" type="stmt" count="0"/>
-        <metrics loc="390" ncloc="183" classes="1" methods="24" coveredmethods="12" conditionals="0" coveredconditionals="0" statements="80" coveredstatements="38" elements="104" coveredelements="50"/>
+        <metrics loc="390" ncloc="183" classes="1" methods="24" coveredmethods="14" conditionals="0" coveredconditionals="0" statements="80" coveredstatements="49" elements="104" coveredelements="63"/>
       </file>
     </package>
-    <metrics files="1" loc="390" ncloc="183" classes="1" methods="24" coveredmethods="12" conditionals="0" coveredconditionals="0" statements="80" coveredstatements="38" elements="104" coveredelements="50"/>
+    <metrics files="1" loc="390" ncloc="183" classes="1" methods="24" coveredmethods="14" conditionals="0" coveredconditionals="0" statements="80" coveredstatements="49" elements="104" coveredelements="63"/>
   </project>
 </coverage>

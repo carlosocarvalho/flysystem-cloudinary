@@ -41,6 +41,7 @@ class CloudinaryAdapterTest extends ApplicationCase
     public static function tearDownAfterClass(): void
     {
        self::$adapter->delete(sprintf('uploads/%s', self::$image_id));
+       //self::$adapter->delete(sprintf('uploads/renamed-%s', self::$image_id));
     }
 
 
@@ -72,27 +73,28 @@ class CloudinaryAdapterTest extends ApplicationCase
      *
      * @return void
      */
-    public function test_read_file(){
+    public function test_rename_file(){
        
-        // $stub = $this->getMockBuilder(Filesystem::class)
-        // ->disableOriginalConstructor()
-        // ->setMethods(['read'])
-        // ->getMock();
-       
-        
-        // // Configure the stub.
-        // $stub->method('read')
-        //      ->willReturn(['content'=>'file.png']);
+        $adapter = self::$adapter;
+        $id = sprintf('uploads/origin-%s', self::$image_id);
+        $renamedId = sprintf('uploads/renamed-%s', self::$image_id);
+        $up = $adapter->write($id, $this->getContentFile());
+        $this->assertTrue($up);
+        $adapter->rename($id, $renamedId);
+        $this->assertTrue($adapter->has($renamedId));
 
-        //  $this->assertEquals(['content'=>'file.png'], $stub->read('file.png'));    
-        //$adapter = self::$adapter;
-        //$id = sprintf('/uploads/read-%s', self::$image_id);
-        //$this->assertTrue($adapter->write($id, $this->getContentFile()));
-        //$url = cloudinary_url($id.'.png');
-        //sleep(3);
-        //dump(file_get_contents($url));
-        //dump($adapter->read($id.'.png', array("width" => 100, "height" => 150, "crop" => "fill")));
-        $this->assertFalse(false);
+    }
+
+    public function test_create_and_delete_dir()
+    {
+        $adapter = self::$adapter;
+        $dirName = 'test-directory-name';
+        $result = $adapter->createDir($dirName);
+       
+        //$this->assertContains($dirName, $result);
+        $this->assertTrue($result);
+        $this->assertTrue($adapter->deleteDir($dirName));
+        
     }
 
 
