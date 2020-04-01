@@ -4,24 +4,13 @@ namespace CarlosOCarvalho\Flysystem\Cloudinary;
 
 use CarlosOCarvalho\Flysystem\Cloudinary\CloudinaryAdapter as Adapter;
 use CarlosOCarvalho\Flysystem\Cloudinary\Test\ApplicationCase;
-use League\Flysystem\File;
 use League\Flysystem\Filesystem;
-use RuntimeException;
+
 
 class CloudinaryAdapterTest extends ApplicationCase
 {
 
-    protected static $cloudinary;
-
-    private static $adapter;
-    
-    private static $image_id;
-
-    private static $config;
-
-    const IMAGE = __DIR__.'/logo-git.png';
-    const IMAGE_UPDATE = __DIR__.'/logo-update.png';
-
+   
 
     public static function setUpBeforeClass(): void
     {
@@ -75,17 +64,7 @@ class CloudinaryAdapterTest extends ApplicationCase
         $adapter->delete($id);
     }
 
-    public function test_stream_file()
-    {   
-        $adapter = self::$adapter;
-        $id = sprintf('uploads/-stream-%s', self::$image_id);
-        $up = $adapter->write($id, $this->getContentFile());
-        $this->assertTrue($up);
-        $input = $adapter->readStream($id);
-        $d = stream_get_contents($input);
-        $this->assertTrue($d == $this->getContentFile());
-        $adapter->delete($id);
-    }
+    
 
     public function test_read_file()
     {   
@@ -116,17 +95,7 @@ class CloudinaryAdapterTest extends ApplicationCase
         
     }
 
-    public function test_create_and_delete_dir()
-    {
-        $adapter = self::$adapter;
-        $dirName = 'test-directory-name';
-        $result = $adapter->createDir($dirName);
-       
-        //$this->assertContains($dirName, $result);
-        $this->assertTrue($result);
-        $this->assertTrue($adapter->deleteDir($dirName));
-        
-    }
+    
 
     public function test_update_file()
     {
@@ -140,19 +109,7 @@ class CloudinaryAdapterTest extends ApplicationCase
     }
 
 
-    public function test_update_stream_file()
-    {
-        $adapter = self::$adapter;
-        $id = sprintf('uploads/update-stream-%s', self::$image_id);
-
-        $stream = fopen(self::IMAGE_UPDATE, 'r+');
-        $up = $adapter->write($id, $this->getContentFile());
-        $this->assertTrue($up);
-        $this->assertTrue($adapter->updateStream($id, $stream));
-        fclose($stream);
-        $adapter->delete($id);
-        
-    }
+   
     
     public function test_delete_file()
     {
@@ -177,41 +134,10 @@ class CloudinaryAdapterTest extends ApplicationCase
         $adapter->delete($id);
     }
 
-    public function test_list_container()
-    {
-        $adapter = self::$adapter;
-        $id = sprintf('uploads/%s', md5(strtotime('now')));
-       
-        $up = $adapter->write($id, $this->getContentFile());
-        $this->assertTrue($up);
-        $result = $adapter->listContents('uploads');
-        $arrayFilter = array_filter($result, function($row) use ($id){
-            return $row['public_id'] == $id;
-        });
-        $this->assertCount(1, $arrayFilter);
-        $adapter->delete($id);
-        
-    }
+   
     
-    /**
-     * @ex
-     *
-     * @return void
-     */
-    public function test_failure_stream_file()
-    {   
-        try{
-            $adapter = self::$adapter;
-            $id = sprintf('uploads/-stream-%s', self::$image_id);
-            $stream = $adapter->readStream($id);
-        }catch(\Exception $e){
-            $this->assertTrue(true);
-        }
-    }
-    public function getContentFile(){
-        return file_get_contents(self::IMAGE);
-    }
-
+    
+    
 
 
     
