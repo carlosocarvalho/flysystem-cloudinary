@@ -21,11 +21,6 @@ class CloudinaryAdapterTest extends ApplicationCase
     const IMAGE = __DIR__.'/logo-git.png';
 
 
-    
-    
-
-
-
     public static function setUpBeforeClass(): void
     {
 
