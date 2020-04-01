@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1585765906">
-  <project timestamp="1585765906">
+<coverage generated="1585766096">
+  <project timestamp="1585766096">
     <package name="CarlosOCarvalho\Flysystem\Cloudinary">
       <file name="/Users/carloscarvalho/projects/php/flysystem-cloudinary/src/CloudinaryAdapter.php">
         <class name="CarlosOCarvalho\Flysystem\Cloudinary\CloudinaryAdapter" namespace="CarlosOCarvalho\Flysystem\Cloudinary">
-          <metrics complexity="36" methods="24" coveredmethods="11" conditionals="0" coveredconditionals="0" statements="80" coveredstatements="37" elements="104" coveredelements="48"/>
+          <metrics complexity="36" methods="24" coveredmethods="12" conditionals="0" coveredconditionals="0" statements="80" coveredstatements="38" elements="104" coveredelements="50"/>
         </class>
         <line num="32" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="1"/>
         <line num="34" type="stmt" count="1"/>
@@ -85,8 +85,8 @@
         <line num="291" type="stmt" count="1"/>
         <line num="300" type="method" name="getSize" visibility="public" complexity="1" crap="1" count="1"/>
         <line num="302" type="stmt" count="1"/>
-        <line num="314" type="method" name="getMimetype" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="316" type="stmt" count="0"/>
+        <line num="314" type="method" name="getMimetype" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="316" type="stmt" count="1"/>
         <line num="325" type="method" name="getTimestamp" visibility="public" complexity="1" crap="2" count="0"/>
         <line num="327" type="stmt" count="0"/>
         <line num="334" type="method" name="prepareResourceMetadata" visibility="protected" complexity="1" crap="1" count="1"/>
@@ -110,9 +110,9 @@
         <line num="384" type="stmt" count="0"/>
         <line num="385" type="stmt" count="0"/>
         <line num="387" type="stmt" count="0"/>
-        <metrics loc="390" ncloc="183" classes="1" methods="24" coveredmethods="11" conditionals="0" coveredconditionals="0" statements="80" coveredstatements="37" elements="104" coveredelements="48"/>
+        <metrics loc="390" ncloc="183" classes="1" methods="24" coveredmethods="12" conditionals="0" coveredconditionals="0" statements="80" coveredstatements="38" elements="104" coveredelements="50"/>
       </file>
     </package>
-    <metrics files="1" loc="390" ncloc="183" classes="1" methods="24" coveredmethods="11" conditionals="0" coveredconditionals="0" statements="80" coveredstatements="37" elements="104" coveredelements="48"/>
+    <metrics files="1" loc="390" ncloc="183" classes="1" methods="24" coveredmethods="12" conditionals="0" coveredconditionals="0" statements="80" coveredstatements="38" elements="104" coveredelements="50"/>
   </project>
 </coverage>
