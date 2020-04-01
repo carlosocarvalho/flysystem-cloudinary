@@ -1,9 +1,7 @@
 {
     "name": "carlosocarvalho/flysystem-cloudinary",
-    "version": "1.0.4",
     "description": "Flysystem adapter for Cloudinary",
     "license": "MIT",
-    "tags": ["cloudinary", "thephpleague", "adpater"],
     "require": {
         "php": ">=5.4.0",
         "cloudinary/cloudinary_php": "^1.3",
@@ -23,7 +21,9 @@
     },
     "authors": [{
         "name": "carlosocarvalho",
-        "email": "carlosocarvalho.com.br@gmail.com"
+        "email": "carlosocarvalho.com.br@gmail.com",
+        "homepage": "https://carlosocarvalho.com.br",
+        "role": "Owner"
     }],
     "minimum-stability": "stable",
     "config": {
