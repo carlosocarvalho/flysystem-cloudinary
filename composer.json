@@ -21,7 +21,7 @@
         "mockery/mockery": "0.9.*",
         "phpunit/php-code-coverage": "^4.0.7",
         "vlucas/phpdotenv": "^4.1",
-        "symfony/var-dumper": "^5.0"
+        "symfony/var-dumper": "^3.4.39"
     },
     "authors": [{
         "name": "carlosocarvalho",
