@@ -62,8 +62,10 @@ class CloudinaryAdapterTest extends ApplicationCase
         $adapter = self::$adapter;
         $id = sprintf('uploads/%s', self::$image_id);
         $up = $adapter->write($id, $this->getContentFile());
-        //fclose($stream);
         $this->assertTrue($up);
+        $this->assertContains($id, $adapter->getMetadata($id));
+        $this->assertEquals(filesize(self::IMAGE),$adapter->getSize($id));
+        $this->assertEquals('png',$adapter->getMimetype($id));
     }
     /**
      * @depends test_success_upload_file

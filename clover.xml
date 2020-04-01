@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1585762595">
-  <project timestamp="1585762595">
+<coverage generated="1585765906">
+  <project timestamp="1585765906">
     <package name="CarlosOCarvalho\Flysystem\Cloudinary">
       <file name="/Users/carloscarvalho/projects/php/flysystem-cloudinary/src/CloudinaryAdapter.php">
         <class name="CarlosOCarvalho\Flysystem\Cloudinary\CloudinaryAdapter" namespace="CarlosOCarvalho\Flysystem\Cloudinary">
-          <metrics complexity="36" methods="24" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="80" coveredstatements="20" elements="104" coveredelements="23"/>
+          <metrics complexity="36" methods="24" coveredmethods="11" conditionals="0" coveredconditionals="0" statements="80" coveredstatements="37" elements="104" coveredelements="48"/>
         </class>
         <line num="32" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="1"/>
         <line num="34" type="stmt" count="1"/>
@@ -53,11 +53,11 @@
         <line num="177" type="stmt" count="0"/>
         <line num="190" type="method" name="createDir" visibility="public" complexity="1" crap="2" count="0"/>
         <line num="192" type="stmt" count="0"/>
-        <line num="206" type="method" name="has" visibility="public" complexity="2" crap="2.06" count="1"/>
+        <line num="206" type="method" name="has" visibility="public" complexity="2" crap="2" count="1"/>
         <line num="209" type="stmt" count="1"/>
         <line num="210" type="stmt" count="1"/>
         <line num="211" type="stmt" count="1"/>
-        <line num="213" type="stmt" count="0"/>
+        <line num="213" type="stmt" count="1"/>
         <line num="222" type="method" name="read" visibility="public" complexity="1" crap="2" count="0"/>
         <line num="224" type="stmt" count="0"/>
         <line num="225" type="stmt" count="0"/>
@@ -79,40 +79,40 @@
         <line num="268" type="stmt" count="0"/>
         <line num="269" type="stmt" count="0"/>
         <line num="271" type="stmt" count="0"/>
-        <line num="280" type="method" name="getMetadata" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="282" type="stmt" count="0"/>
-        <line num="289" type="method" name="getResource" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="291" type="stmt" count="0"/>
-        <line num="300" type="method" name="getSize" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="302" type="stmt" count="0"/>
+        <line num="280" type="method" name="getMetadata" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="282" type="stmt" count="1"/>
+        <line num="289" type="method" name="getResource" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="291" type="stmt" count="1"/>
+        <line num="300" type="method" name="getSize" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="302" type="stmt" count="1"/>
         <line num="314" type="method" name="getMimetype" visibility="public" complexity="1" crap="2" count="0"/>
         <line num="316" type="stmt" count="0"/>
         <line num="325" type="method" name="getTimestamp" visibility="public" complexity="1" crap="2" count="0"/>
         <line num="327" type="stmt" count="0"/>
-        <line num="334" type="method" name="prepareResourceMetadata" visibility="protected" complexity="1" crap="2" count="0"/>
-        <line num="336" type="stmt" count="0"/>
-        <line num="337" type="stmt" count="0"/>
-        <line num="338" type="stmt" count="0"/>
-        <line num="339" type="stmt" count="0"/>
-        <line num="340" type="stmt" count="0"/>
-        <line num="341" type="stmt" count="0"/>
-        <line num="348" type="method" name="prepareMimetype" visibility="protected" complexity="1" crap="2" count="0"/>
-        <line num="351" type="stmt" count="0"/>
-        <line num="352" type="stmt" count="0"/>
-        <line num="353" type="stmt" count="0"/>
-        <line num="360" type="method" name="prepareTimestamp" visibility="protected" complexity="1" crap="2" count="0"/>
-        <line num="362" type="stmt" count="0"/>
-        <line num="363" type="stmt" count="0"/>
-        <line num="370" type="method" name="prepareSize" visibility="protected" complexity="1" crap="2" count="0"/>
-        <line num="372" type="stmt" count="0"/>
-        <line num="373" type="stmt" count="0"/>
+        <line num="334" type="method" name="prepareResourceMetadata" visibility="protected" complexity="1" crap="1" count="1"/>
+        <line num="336" type="stmt" count="1"/>
+        <line num="337" type="stmt" count="1"/>
+        <line num="338" type="stmt" count="1"/>
+        <line num="339" type="stmt" count="1"/>
+        <line num="340" type="stmt" count="1"/>
+        <line num="341" type="stmt" count="1"/>
+        <line num="348" type="method" name="prepareMimetype" visibility="protected" complexity="1" crap="1" count="1"/>
+        <line num="351" type="stmt" count="1"/>
+        <line num="352" type="stmt" count="1"/>
+        <line num="353" type="stmt" count="1"/>
+        <line num="360" type="method" name="prepareTimestamp" visibility="protected" complexity="1" crap="1" count="1"/>
+        <line num="362" type="stmt" count="1"/>
+        <line num="363" type="stmt" count="1"/>
+        <line num="370" type="method" name="prepareSize" visibility="protected" complexity="1" crap="1" count="1"/>
+        <line num="372" type="stmt" count="1"/>
+        <line num="373" type="stmt" count="1"/>
         <line num="382" type="method" name="getUrl" visibility="public" complexity="2" crap="6" count="0"/>
         <line num="384" type="stmt" count="0"/>
         <line num="385" type="stmt" count="0"/>
         <line num="387" type="stmt" count="0"/>
-        <metrics loc="390" ncloc="183" classes="1" methods="24" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="80" coveredstatements="20" elements="104" coveredelements="23"/>
+        <metrics loc="390" ncloc="183" classes="1" methods="24" coveredmethods="11" conditionals="0" coveredconditionals="0" statements="80" coveredstatements="37" elements="104" coveredelements="48"/>
       </file>
     </package>
-    <metrics files="1" loc="390" ncloc="183" classes="1" methods="24" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="80" coveredstatements="20" elements="104" coveredelements="23"/>
+    <metrics files="1" loc="390" ncloc="183" classes="1" methods="24" coveredmethods="11" conditionals="0" coveredconditionals="0" statements="80" coveredstatements="37" elements="104" coveredelements="48"/>
   </project>
 </coverage>
