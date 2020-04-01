@@ -41,9 +41,9 @@ class CloudinaryAdapterTest extends ApplicationCase
 
     public static function tearDownAfterClass(): void
     {
-       self::$adapter->delete(sprintf('uploads/%s', self::$image_id));
-       self::$adapter->delete(sprintf('uploads/renamed-%s', self::$image_id));
-       self::$adapter->delete(sprintf('uploads/update-%s', self::$image_id));
+    //    self::$adapter->delete(sprintf('uploads/%s', self::$image_id));
+    //    self::$adapter->delete(sprintf('uploads/renamed-%s', self::$image_id));
+    //    self::$adapter->delete(sprintf('uploads/update-%s', self::$image_id));
     }
 
 
@@ -66,9 +66,12 @@ class CloudinaryAdapterTest extends ApplicationCase
         $id = sprintf('uploads/%s', self::$image_id);
         $up = $adapter->write($id, $this->getContentFile());
         $this->assertTrue($up);
-        $this->assertContains($id, $adapter->getMetadata($id));
+        $meta= $adapter->getMetadata($id);
+        $this->assertContains($id, $meta);
         $this->assertEquals(filesize(self::IMAGE),$adapter->getSize($id));
         $this->assertEquals('image/png',$adapter->getMimetype($id));
+        $this->assertEquals($meta['timestamp'], $adapter->getTimestamp($id));
+        $adapter->delete($id);
     }
     /**
      * @depends test_success_upload_file
@@ -84,7 +87,8 @@ class CloudinaryAdapterTest extends ApplicationCase
         $this->assertTrue($up);
         $adapter->rename($id, $renamedId);
         $this->assertTrue($adapter->has($renamedId));
-
+        $adapter->delete($renamedId);
+        
     }
 
     public function test_create_and_delete_dir()
@@ -106,7 +110,7 @@ class CloudinaryAdapterTest extends ApplicationCase
         $up = $adapter->write($id, $this->getContentFile());
         $this->assertTrue($up);
         $this->assertTrue($adapter->update($id, file_get_contents(self::IMAGE_UPDATE)));
-        
+        $adapter->delete($id);
         
     }
 
@@ -121,6 +125,7 @@ class CloudinaryAdapterTest extends ApplicationCase
         $this->assertTrue($up);
         $this->assertTrue($adapter->updateStream($id, $stream));
         fclose($stream);
+        $adapter->delete($id);
         
     }
     
@@ -143,7 +148,23 @@ class CloudinaryAdapterTest extends ApplicationCase
         $up = $adapter->write($id, $this->getContentFile());
         $this->assertTrue($up);
         $this->assertTrue($adapter->copy($id, $copyId));
-        
+        $adapter->delete($copyId);
+        $adapter->delete($id);
+    }
+
+    public function test_list_container()
+    {
+        $adapter = self::$adapter;
+        $id = sprintf('uploads/%s', md5(strtotime('now')));
+       
+        $up = $adapter->write($id, $this->getContentFile());
+        $this->assertTrue($up);
+        $result = $adapter->listContents('uploads');
+        $arrayFilter = array_filter($result, function($row) use ($id){
+            return $row['public_id'] == $id;
+        });
+        $this->assertCount(1, $arrayFilter);
+        $adapter->delete($id);
         
     }
 
