@@ -32,5 +32,8 @@
     "minimum-stability": "stable",
     "config": {
         "bin-dir": "bin"
+    },
+    "scripts": {
+        "tdd": "bin/phpunit"
     }
 }
