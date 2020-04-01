@@ -111,6 +111,42 @@ class CloudinaryAdapterTest extends ApplicationCase
     }
 
 
+    public function test_update_stream_file()
+    {
+        $adapter = self::$adapter;
+        $id = sprintf('uploads/update-stream-%s', self::$image_id);
+
+        $stream = fopen(self::IMAGE_UPDATE, 'r+');
+        $up = $adapter->write($id, $this->getContentFile());
+        $this->assertTrue($up);
+        $this->assertTrue($adapter->updateStream($id, $stream));
+        fclose($stream);
+        
+    }
+    
+    public function test_delete_file()
+    {
+        $adapter = self::$adapter;
+        $id = sprintf('uploads/delete-%s', self::$image_id);
+        $up = $adapter->write($id, $this->getContentFile());
+        $this->assertTrue($up);
+        $this->assertTrue($adapter->delete($id));
+        
+        
+    }
+
+    public function test_copy_file()
+    {
+        $adapter = self::$adapter;
+        $id = sprintf('uploads/for-copy-%s', self::$image_id);
+        $copyId = sprintf('uploads/copy-%s', self::$image_id);
+        $up = $adapter->write($id, $this->getContentFile());
+        $this->assertTrue($up);
+        $this->assertTrue($adapter->copy($id, $copyId));
+        
+        
+    }
+
     public function getContentFile(){
         return file_get_contents(self::IMAGE);
     }
