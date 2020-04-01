@@ -9,3 +9,5 @@ install:
 
 script:
   - bin/phpunit
+after_success:
+    - bash <(curl -s https://codecov.io/bash) -t env('CODECOV_TOKEN')
