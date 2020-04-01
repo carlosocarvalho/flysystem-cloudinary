@@ -19,6 +19,7 @@ class CloudinaryAdapterTest extends ApplicationCase
     private static $config;
 
     const IMAGE = __DIR__.'/logo-git.png';
+    const IMAGE_UPDATE = __DIR__.'/logo-update.png';
 
 
     public static function setUpBeforeClass(): void
@@ -41,7 +42,8 @@ class CloudinaryAdapterTest extends ApplicationCase
     public static function tearDownAfterClass(): void
     {
        self::$adapter->delete(sprintf('uploads/%s', self::$image_id));
-       //self::$adapter->delete(sprintf('uploads/renamed-%s', self::$image_id));
+       self::$adapter->delete(sprintf('uploads/renamed-%s', self::$image_id));
+       self::$adapter->delete(sprintf('uploads/update-%s', self::$image_id));
     }
 
 
@@ -94,6 +96,17 @@ class CloudinaryAdapterTest extends ApplicationCase
         //$this->assertContains($dirName, $result);
         $this->assertTrue($result);
         $this->assertTrue($adapter->deleteDir($dirName));
+        
+    }
+
+    public function test_update_file()
+    {
+        $adapter = self::$adapter;
+        $id = sprintf('uploads/update-%s', self::$image_id);
+        $up = $adapter->write($id, $this->getContentFile());
+        $this->assertTrue($up);
+        $this->assertTrue($adapter->update($id, file_get_contents(self::IMAGE_UPDATE)));
+        
         
     }
 
