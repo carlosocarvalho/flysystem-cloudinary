@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1585782933">
-  <project timestamp="1585782933">
+<coverage generated="1585783903">
+  <project timestamp="1585783903">
     <package name="CarlosOCarvalho\Flysystem\Cloudinary">
       <file name="/Users/carloscarvalho/projects/php/flysystem-cloudinary/src/CloudinaryAdapter.php">
         <class name="CarlosOCarvalho\Flysystem\Cloudinary\CloudinaryAdapter" namespace="CarlosOCarvalho\Flysystem\Cloudinary">
