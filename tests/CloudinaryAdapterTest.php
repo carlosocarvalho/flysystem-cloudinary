@@ -49,14 +49,20 @@ class CloudinaryAdapterTest extends ApplicationCase
     }
 
 
-    public function testAssertInstanceAdapter()
+    public function test_valid_instance()
     {
         $cloudinary = new Adapter(self::$config);
         $this->assertInstanceOf('CarlosOCarvalho\Flysystem\Cloudinary\CloudinaryAdapter', $cloudinary);
 
     }
+
+    /**
+     * @depends test_valid_instance
+     *
+     * @return void
+     */
    
-    public function testAUpload()
+    public function test_success_upload_file()
     {   
         $adapter = self::$adapter;
         $id = sprintf('uploads/%s', self::$image_id);
@@ -64,15 +70,19 @@ class CloudinaryAdapterTest extends ApplicationCase
         //fclose($stream);
         $this->assertTrue($up);
     }
-
-    public function testReadFileName(){
+    /**
+     * @depends test_success_upload_file
+     *
+     * @return void
+     */
+    public function test_read_file(){
        
         $stub = $this->getMockBuilder(Filesystem::class)
         ->disableOriginalConstructor()
         ->setMethods(['read'])
         ->getMock();
        
-        dump(cloudinary_url('okd'));
+        
         // Configure the stub.
         $stub->method('read')
              ->willReturn(['content'=>'file.png']);
