@@ -26,7 +26,7 @@ class CloudinaryAdapterTest extends ApplicationCase
 
 
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
 
         self::$config = [
@@ -43,7 +43,7 @@ class CloudinaryAdapterTest extends ApplicationCase
     }
 
 
-    public static function tearDownAfterClass()
+    public static function tearDownAfterClass(): void
     {
        self::$adapter->delete(sprintf('uploads/%s', self::$image_id));
     }
