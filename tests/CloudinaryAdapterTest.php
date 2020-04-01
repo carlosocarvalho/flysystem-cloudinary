@@ -73,6 +73,30 @@ class CloudinaryAdapterTest extends ApplicationCase
         $this->assertEquals($meta['timestamp'], $adapter->getTimestamp($id));
         $adapter->delete($id);
     }
+
+    public function test_stream_file()
+    {   
+        $adapter = self::$adapter;
+        $id = sprintf('uploads/-stream-%s', self::$image_id);
+        $up = $adapter->write($id, $this->getContentFile());
+        $this->assertTrue($up);
+        $input = $adapter->readStream($id);
+        $d = stream_get_contents($input);
+        $this->assertTrue($d == $this->getContentFile());
+        $adapter->delete($id);
+    }
+
+    public function test_read_file()
+    {   
+        $adapter = self::$adapter;
+        $id = sprintf('uploads/read-file-%s', self::$image_id);
+        $up = $adapter->write($id, $this->getContentFile());
+        $this->assertTrue($up);
+        $content = $adapter->read($id);
+        $this->assertTrue($content == $this->getContentFile());
+        $adapter->delete($id);
+    }
+
     /**
      * @depends test_success_upload_file
      *
