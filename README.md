@@ -1,5 +1,5 @@
-# flysystem-cloudinary
-Adapter for theleague php flysystem for Cloudinary
+# flysystem-cloudinary V2
+Adapter for theleague php flysystem for Cloudin
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/40851dce873643d4b8c4f720694237da)](https://app.codacy.com/app/carlosocarvalho-git/flysystem-cloudinary?utm_source=github.com&utm_medium=referral&utm_content=carlosocarvalho/flysystem-cloudinary&utm_campaign=Badge_Grade_Dashboard)
 [![Author](https://img.shields.io/badge/autor-@carlosocarvalho-blue.svg?style=flat-square)](https://twitter.com/carlosocarvalho)
