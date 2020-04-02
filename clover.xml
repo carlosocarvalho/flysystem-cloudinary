@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1585841311">
-  <project timestamp="1585841311">
+<coverage generated="1585841738">
+  <project timestamp="1585841738">
     <package name="CarlosOCarvalho\Flysystem\Cloudinary">
       <file name="/Users/carloscarvalho/projects/php/flysystem-cloudinary/src/CloudinaryAdapter.php">
         <class name="CarlosOCarvalho\Flysystem\Cloudinary\CloudinaryAdapter" namespace="CarlosOCarvalho\Flysystem\Cloudinary">
-          <metrics complexity="36" methods="23" coveredmethods="20" conditionals="0" coveredconditionals="0" statements="84" coveredstatements="78" elements="107" coveredelements="98"/>
+          <metrics complexity="34" methods="21" coveredmethods="20" conditionals="0" coveredconditionals="0" statements="79" coveredstatements="78" elements="100" coveredelements="98"/>
         </class>
         <line num="54" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="14"/>
         <line num="56" type="stmt" count="14"/>
@@ -84,38 +84,31 @@
         <line num="304" type="stmt" count="1"/>
         <line num="313" type="method" name="lastModified" visibility="public" complexity="1" crap="1" count="2"/>
         <line num="315" type="stmt" count="2"/>
-        <line num="323" type="method" name="prepareMimetype" visibility="protected" complexity="1" crap="2" count="0"/>
-        <line num="326" type="stmt" count="0"/>
-        <line num="327" type="stmt" count="0"/>
-        <line num="328" type="stmt" count="0"/>
-        <line num="336" type="method" name="prepareSize" visibility="protected" complexity="1" crap="2" count="0"/>
-        <line num="338" type="stmt" count="0"/>
-        <line num="339" type="stmt" count="0"/>
-        <line num="342" type="method" name="fetchFileMetadata" visibility="private" complexity="3" crap="3.03" count="4"/>
-        <line num="345" type="stmt" count="4"/>
-        <line num="346" type="stmt" count="1"/>
-        <line num="347" type="stmt" count="1"/>
-        <line num="349" type="stmt" count="3"/>
-        <line num="351" type="stmt" count="3"/>
-        <line num="352" type="stmt" count="0"/>
-        <line num="354" type="stmt" count="3"/>
-        <line num="363" type="method" name="mapToObject" visibility="private" complexity="1" crap="1" count="9"/>
-        <line num="365" type="stmt" count="9"/>
+        <line num="325" type="method" name="fetchFileMetadata" visibility="private" complexity="3" crap="3.03" count="4"/>
+        <line num="328" type="stmt" count="4"/>
+        <line num="329" type="stmt" count="1"/>
+        <line num="330" type="stmt" count="1"/>
+        <line num="332" type="stmt" count="3"/>
+        <line num="334" type="stmt" count="3"/>
+        <line num="335" type="stmt" count="0"/>
+        <line num="337" type="stmt" count="3"/>
+        <line num="346" type="method" name="mapToObject" visibility="private" complexity="1" crap="1" count="9"/>
+        <line num="348" type="stmt" count="9"/>
+        <line num="349" type="stmt" count="9"/>
+        <line num="350" type="stmt" count="9"/>
+        <line num="351" type="stmt" count="9"/>
+        <line num="352" type="stmt" count="9"/>
+        <line num="353" type="stmt" count="9"/>
+        <line num="354" type="stmt" count="9"/>
+        <line num="364" type="method" name="extractExtraMetadata" visibility="private" complexity="4" crap="4" count="9"/>
         <line num="366" type="stmt" count="9"/>
-        <line num="367" type="stmt" count="9"/>
         <line num="368" type="stmt" count="9"/>
         <line num="369" type="stmt" count="9"/>
         <line num="370" type="stmt" count="9"/>
-        <line num="371" type="stmt" count="9"/>
-        <line num="381" type="method" name="extractExtraMetadata" visibility="private" complexity="4" crap="4" count="9"/>
-        <line num="383" type="stmt" count="9"/>
-        <line num="385" type="stmt" count="9"/>
-        <line num="386" type="stmt" count="9"/>
-        <line num="387" type="stmt" count="9"/>
-        <line num="391" type="stmt" count="9"/>
-        <metrics loc="393" ncloc="209" classes="1" methods="23" coveredmethods="20" conditionals="0" coveredconditionals="0" statements="84" coveredstatements="78" elements="107" coveredelements="98"/>
+        <line num="374" type="stmt" count="9"/>
+        <metrics loc="376" ncloc="199" classes="1" methods="21" coveredmethods="20" conditionals="0" coveredconditionals="0" statements="79" coveredstatements="78" elements="100" coveredelements="98"/>
       </file>
     </package>
-    <metrics files="1" loc="393" ncloc="209" classes="1" methods="23" coveredmethods="20" conditionals="0" coveredconditionals="0" statements="84" coveredstatements="78" elements="107" coveredelements="98"/>
+    <metrics files="1" loc="376" ncloc="199" classes="1" methods="21" coveredmethods="20" conditionals="0" coveredconditionals="0" statements="79" coveredstatements="78" elements="100" coveredelements="98"/>
   </project>
 </coverage>
