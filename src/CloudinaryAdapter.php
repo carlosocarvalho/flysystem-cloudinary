@@ -17,6 +17,7 @@ use League\Flysystem\UnableToCopyFile;
 use League\Flysystem\UnableToDeleteFile;
 use League\Flysystem\UnableToMoveFile;
 use League\Flysystem\UnableToReadFile;
+use League\Flysystem\UnableToRetrieveMetadata;
 use Throwable;
 
 
@@ -31,6 +32,15 @@ class CloudinaryAdapter implements FilesystemAdapter
     protected $api;
 
     private $visibility;
+
+    private const EXTRA_METADATA_FIELDS = [
+        'version',
+        'width',
+        'height',
+        'url',
+        'secure_url',
+        'next_cursor',
+    ];
     /**
      * Cloudinary does not suppory visibility - all is public
      */
@@ -87,7 +97,7 @@ class CloudinaryAdapter implements FilesystemAdapter
             ]
         );
     }
-    
+
 
     /**
      * Copy a file.
@@ -99,8 +109,8 @@ class CloudinaryAdapter implements FilesystemAdapter
      * @return bool
      */
     public function copy(string $source, string $destination, Config $config): void
-    {  
-       
+    {
+
         try {
             $url = cloudinary_url_internal($source);
             Uploader::upload($url, ['public_id' => $destination]);
@@ -128,9 +138,8 @@ class CloudinaryAdapter implements FilesystemAdapter
     {
         try {
             $result = Uploader::destroy($path, ['invalidate' => true])['result'];
-            if( $result != 'ok')
+            if ($result != 'ok')
                 throw new UnableToDeleteFile('file not found');
-                
         } catch (Throwable $exception) {
             throw UnableToDeleteFile::atLocation($path, '', $exception);
         }
@@ -205,7 +214,6 @@ class CloudinaryAdapter implements FilesystemAdapter
     public function readStream($path)
     {
         return fopen(cloudinary_url($path), 'r');
-        
     }
     /**
      * List contents of a directory.
@@ -234,35 +242,15 @@ class CloudinaryAdapter implements FilesystemAdapter
         // parse resourses
         foreach ($resources as $i => $resource) {
             //$resources[$i] = $this->prepareResourceMetadata($resource);
-            yield  $this->makeObject($resource);
+            yield  $this->mapToObject($resource);
             //
-            
+
         }
         //return $resources;
     }
 
-    private function makeObject($resource){
-        
-        return new FileAttributes(
-            $resource['public_id'],
-            (int) $resource['bytes'],
-            null,
-            (int) strtotime($resource['created_at']),
-            (string) $this->prepareMimetype($resource)
-            /*, (int) $fileSize, null, $lastModified, $mimetype, $this->extractExtraMetadata($metadata)*/
-        );
-    }
-    /**
-     * Get all the meta data of a file or directory.
-     *
-     * @param string $path
-     *
-     * @return array|false
-     */
-    public function getMetadata($path)
-    {
-        return $this->prepareResourceMetadata($this->getResource($path));
-    }
+
+
     /**
      * Get Resource data
      * @param  string $path
@@ -281,17 +269,16 @@ class CloudinaryAdapter implements FilesystemAdapter
      */
     public function fileSize($path): FileAttributes
     {
-        $resource =  $this->getResource($path);
-        return new FileAttributes($resource['public_id'], (int) $this->prepareSize($resource));
+        return $this->fetchFileMetadata($path, FileAttributes::ATTRIBUTE_FILE_SIZE);
     }
 
-     /**
+    /**
      * @param mixed $visibility
      * @throws InvalidVisibilityProvided
      * @throws FilesystemException
      */
-    public function setVisibility(string $path, $visibility): void{
-
+    public function setVisibility(string $path, $visibility): void
+    {
     }
 
     /**
@@ -300,8 +287,7 @@ class CloudinaryAdapter implements FilesystemAdapter
      */
     public function visibility(string $path): FileAttributes
     {
-        $resource =  $this->getResource($path);
-        return new FileAttributes($resource['public_id'], (int) $this->prepareSize($resource));
+        return $this->fetchFileMetadata($path, FileAttributes::ATTRIBUTE_VISIBILITY);
     }
     /**
      * Get the mimetype of a file.
@@ -315,8 +301,7 @@ class CloudinaryAdapter implements FilesystemAdapter
      */
     public function mimetype($path): FileAttributes
     {
-        $resource =  $this->getResource($path);
-        return new FileAttributes($resource['public_id'], null, null, null, (string) $this->prepareMimetype($resource));
+        return $this->fetchFileMetadata($path, FileAttributes::ATTRIBUTE_MIME_TYPE);
     }
     /**
      * Get the timestamp of a file.
@@ -327,53 +312,65 @@ class CloudinaryAdapter implements FilesystemAdapter
      */
     public function lastModified(string $path): FileAttributes
     {
-        $resource =  $this->getResource($path);
-        return new FileAttributes($resource['public_id'], null, null, (int) $this->prepareTimestamp($resource));
+        return $this->fetchFileMetadata($path, FileAttributes::ATTRIBUTE_LAST_MODIFIED);
     }
+    
     /**
-     * Prepare apropriate metadata for resource metadata given from cloudinary.
-     * @param  array $resource
+     * fetchFileMetadata get all attributes
+     *
+     * @param string $path
+     * @param string $type
+     * @return FileAttributes
+     */
+    private function fetchFileMetadata(string $path, string $type): FileAttributes
+    {
+        try {
+            $result =  $this->getResource($path);
+        } catch (Throwable $exception) {
+            throw UnableToRetrieveMetadata::create($path, $type, '', $exception);
+        }
+        $attributes = $this->mapToObject($result, $path);
+
+        if (!$attributes instanceof FileAttributes) {
+            throw UnableToRetrieveMetadata::create($path, $type, '');
+        }
+        return $attributes;
+    }
+
+    /**
+     * mapToObject map all attributes
+     *
+     * @param [type] $resource
+     * @return FileAttributes
+     */
+    private function mapToObject($resource): FileAttributes
+    {   
+        return new FileAttributes(
+            $resource['public_id'],
+            (int) $resource['bytes'],
+            'public',
+            (int) strtotime($resource['created_at']),
+            (string) sprintf('%s/%s', $resource['resource_type'] , $resource['format']),
+            $this->extractExtraMetadata((array) $resource)
+        );
+    }
+    
+    /**
+     * Undocumented function
+     *
+     * @param array $metadata
      * @return array
      */
-    protected function prepareResourceMetadata($resource)
+    private function extractExtraMetadata(array $metadata): array
     {
-        $resource['type'] = 'file';
-        $resource['path'] = $resource['public_id'];
-        $resource = array_merge($resource, $this->prepareSize($resource));
-        $resource = array_merge($resource, $this->prepareTimestamp($resource));
-        $resource = array_merge($resource, $this->prepareMimetype($resource));
-        return $resource;
-    }
-    /**
-     * prepare timestpamp response
-     * @param  array $resource
-     * @return array
-     */
-    protected function prepareMimetype($resource)
-    {
-        // hack
-        $mimetype = $resource['resource_type'] . '/' . $resource['format'];
-        $mimetype = str_replace('jpg', 'jpeg', $mimetype); // hack to a hack
-        return $mimetype;
-    }
-    /**
-     * prepare timestpamp response
-     * @param  array $resource
-     * @return array
-     */
-    protected function prepareTimestamp($resource)
-    {
-        $timestamp = strtotime($resource['created_at']);
-        return compact('timestamp');
-    }
-    /**
-     * prepare size response
-     * @param array $resource
-     * @return array
-     */
-    protected function prepareSize($resource)
-    {
-        $size = $resource['bytes'];
-        return $size;
+        $extracted = [];
+
+        foreach (static::EXTRA_METADATA_FIELDS as $field) {
+            if (isset($metadata[$field]) && $metadata[$field] !== '') {
+                $extracted[$field] = $metadata[$field];
+            }
+        }
+
+        return $extracted;
     }
 }

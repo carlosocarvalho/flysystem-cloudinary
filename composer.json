@@ -5,7 +5,7 @@
     "keywords": ["cloudinary", "flysystem"],
     "homepage": "http://carlosocarvalho.github.io/flysystem-cloudinary",
     "require": {
-        "php": ">=7.1",
+        "php": ">=7.2",
         "cloudinary/cloudinary_php": "^1.16",
         "league/flysystem": "2.x-dev"
         

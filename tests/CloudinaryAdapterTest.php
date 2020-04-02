@@ -4,14 +4,36 @@ namespace CarlosOCarvalho\Flysystem\Cloudinary;
 
 use CarlosOCarvalho\Flysystem\Cloudinary\CloudinaryAdapter as Adapter;
 use CarlosOCarvalho\Flysystem\Cloudinary\Test\ApplicationCase;
+use League\Flysystem\FileAttributes;
 use League\Flysystem\Filesystem;
 use League\Flysystem\UnableToDeleteFile;
 use League\Flysystem\UnableToMoveFile;
+use League\Flysystem\UnableToRetrieveMetadata;
 
 class CloudinaryAdapterTest extends ApplicationCase
 {
 
+    
+    protected function tearDown(): void
+    {
+        
 
+        $adapter = $this->adapter();
+        /** @var StorageAttributes[] $listing */
+        $listing = $adapter->listContents(self::ROOT, false);
+
+        foreach ($listing as $item) {
+            if ($item->isFile()) {
+                $adapter->delete($item->path());
+            } else {
+                $adapter->deleteDirectory($item->path());
+            }
+        }
+
+    }
+
+
+    
     /**
      * Validate instance type is Class Core
      * @return void
@@ -177,4 +199,49 @@ class CloudinaryAdapterTest extends ApplicationCase
         }
         $adapter->deleteDirectory($folder);
     }
+    
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function create_and_check_visibility(){
+       
+        $adapter = $this->adapter();
+        $content = fopen(self::IMAGE_UPDATE,'r');
+        $id = $this->makePathFile(sprintf('file-visibility-%s', $this->imageName()));
+        $adapter->writeStream($id, $content);
+        fclose($content);
+        $adapter->setVisibility($id, 'public');
+        $visibility = $adapter->visibility($id);
+        $this->assertEquals('public', $visibility);
+    }
+
+
+    /**
+     * @test
+     */
+    public function fetching_last_modified_of_non_existing_file(): void
+    {
+        $this->expectException(UnableToRetrieveMetadata::class);
+
+        $this->adapter()->lastModified('non-existing-file.txt');
+    }
+
+    /**
+     * @test
+     */
+    public function fetching_last_modified(): void
+    {
+        $adapter = $this->adapter();
+        $content = fopen(self::IMAGE_UPDATE,'r');
+        $id = $this->makePathFile(sprintf('file-visibility-%s', $this->imageName()));
+        $adapter->writeStream($id, $content);
+        fclose($content);
+        $lastModified = $adapter->lastModified($id);
+        $this->assertIsInt($lastModified);
+        $this->assertTrue($lastModified > time() - 30);
+        $this->assertTrue($lastModified < time() + 30);
+    }
+
 }
