@@ -2,3 +2,5 @@
 vendor
 index.php
 README.md
+cover/
+.vscode/
