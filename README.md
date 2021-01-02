@@ -37,5 +37,4 @@ $filesystem->listContents()
 ```
 
 ### For use in laravel
-
-[https://github.com/carlosocarvalho/laravel-storage-cloudinary]
+<a href="https://github.com/carlosocarvalho/laravel-storage-cloudinary"> Access this repository </a>
