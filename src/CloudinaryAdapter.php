@@ -8,22 +8,43 @@ use Cloudinary\Api as Api;
 use Cloudinary\Uploader;
 use League\Flysystem\Config;
 use League\Flysystem\AdapterInterface;
-use League\Flysystem\Adapter\Polyfill\NotSupportingVisibilityTrait;
+use League\Flysystem\FileAttributes;
+// use League\Flysystem\Adapter\Polyfill\NotSupportingVisibilityTrait;
 use League\Flysystem\FileNotFoundException;
+use League\Flysystem\FilesystemAdapter;
+use League\Flysystem\FilesystemOperationFailed;
+use League\Flysystem\UnableToCopyFile;
+use League\Flysystem\UnableToDeleteFile;
+use League\Flysystem\UnableToMoveFile;
+use League\Flysystem\UnableToReadFile;
+use League\Flysystem\UnableToRetrieveMetadata;
+use Throwable;
+
 
 /**
  *
  */
-class CloudinaryAdapter implements AdapterInterface
+class CloudinaryAdapter implements FilesystemAdapter
 {
     /**
      * @var Cloudinary\Api
      */
     protected $api;
+
+    private $visibility;
+
+    private const EXTRA_METADATA_FIELDS = [
+        'version',
+        'width',
+        'height',
+        'url',
+        'secure_url',
+        'next_cursor',
+    ];
     /**
      * Cloudinary does not suppory visibility - all is public
      */
-    use NotSupportingVisibilityTrait;
+
     /**
      * Constructor
      * Sets configuration, and dependency Cloudinary Api.
@@ -46,14 +67,13 @@ class CloudinaryAdapter implements AdapterInterface
      *
      * @return array|false false on failure file meta data on success
      */
-    public function write($path, $contents, Config $options)
+    public function write($path, $contents, Config $options): void
     {
         // 1. Save to temporary local file -- it will be destroyed automatically
         $tempFile = tmpfile();
         fwrite($tempFile, $contents);
         // 2. Use Cloudinary to send
         $uploadedMetadata = $this->writeStream($path, $tempFile, $options);
-        return $uploadedMetadata;
     }
     /**
      * Write a new file using a stream.
@@ -64,14 +84,10 @@ class CloudinaryAdapter implements AdapterInterface
      *
      * @return array|false false on failure file meta data on success
      */
-    public function writeStream($path, $resource, Config $options)
+    public function writeStream($path, $resource, Config $options): void
     {
-        $public_id = $options->has('public_id') ?
-            $options->get('public_id') : $path;
-
-        $resource_type = $options->has('resource_type') ?
-            $options->get('resource_type') : 'auto';
-
+        $public_id = $options->get('public_id', $path);
+        $resource_type = $options->get('resource_type', 'auto');
         $resourceMetadata = stream_get_meta_data($resource);
         $uploadedMetadata = Uploader::upload(
             $resourceMetadata['uri'],
@@ -80,63 +96,9 @@ class CloudinaryAdapter implements AdapterInterface
                 'resource_type' => $resource_type,
             ]
         );
+    }
 
-        return $uploadedMetadata;
-    }
-    /**
-     * Update a file.
-     * Cloudinary has no specific update method. Overwrite instead.
-     *
-     * @param string $path
-     * @param string $contents
-     * @param Config $options   Config object
-     *
-     * @return array|false false on failure file meta data on success
-     */
-    public function update($path, $contents, Config $options)
-    {
-        return $this->write($path, $contents, $options);
-    }
-    /**
-     * Update a file using a stream.
-     * Cloudinary has no specific update method. Overwrite instead.
-     *
-     * @param string   $path
-     * @param resource $resource
-     * @param Config   $options   Config object
-     *
-     * @return array|false false on failure file meta data on success
-     */
-    public function updateStream($path, $resource, Config $options)
-    {
-        return $this->writeStream($path, $resource, $options);
-    }
-    /**
-     * Rename a file.
-     * Paths without extensions.
-     *
-     * @param string $path
-     * @param string $newpath
-     *
-     * @return bool
-     */
-    public function rename($path, $newpath)
-    {
-        $pathInfo = pathinfo($path);
-        if ($pathInfo['dirname'] != '.') {
-            $pathRemote = $pathInfo['dirname'] . '/' . $pathInfo['filename'];
-        } else {
-            $pathRemote = $pathInfo['filename'];
-        }
-        $newPathInfo = pathinfo($newpath);
-        if ($newPathInfo['dirname'] != '.') {
-            $newPathRemote = $newPathInfo['dirname'] . '/' . $newPathInfo['filename'];
-        } else {
-            $newPathRemote = $newPathInfo['filename'];
-        }
-        $result = Uploader::rename($pathRemote, $newPathRemote);
-        return $result['public_id'] == $newPathInfo['filename'];
-    }
+
     /**
      * Copy a file.
      * Copy content from existing url.
@@ -146,11 +108,24 @@ class CloudinaryAdapter implements AdapterInterface
      *
      * @return bool
      */
-    public function copy($path, $newpath)
+    public function copy(string $source, string $destination, Config $config): void
     {
-        $url = cloudinary_url_internal($path);
-        $result = Uploader::upload($url, ['public_id' => $newpath]);
-        return is_array($result) ? $result['public_id'] == $newpath : false;
+
+        try {
+            $url = cloudinary_url_internal($source);
+            Uploader::upload($url, ['public_id' => $destination]);
+        } catch (Throwable $exception) {
+            throw UnableToCopyFile::fromLocationTo($source, $destination, $exception);
+        }
+    }
+    public function move(string $source, string $destination, Config $config): void
+    {
+        try {
+            $this->copy($source, $destination, $config);
+            $this->delete($source);
+        } catch (FilesystemOperationFailed $exception) {
+            throw UnableToMoveFile::fromLocationTo($source, $destination, $exception);
+        }
     }
     /**
      * Delete a file.
@@ -159,10 +134,15 @@ class CloudinaryAdapter implements AdapterInterface
      *
      * @return bool
      */
-    public function delete($path)
+    public function delete($path): void
     {
-        $result = Uploader::destroy($path, ['invalidate' => true]);
-        return is_array($result) ? $result['result'] == 'ok' : false;
+        try {
+            $result = Uploader::destroy($path, ['invalidate' => true])['result'];
+            if ($result != 'ok')
+                throw new UnableToDeleteFile('file not found');
+        } catch (Throwable $exception) {
+            throw UnableToDeleteFile::atLocation($path, '', $exception);
+        }
     }
     /**
      * Delete a directory.
@@ -172,10 +152,9 @@ class CloudinaryAdapter implements AdapterInterface
      *
      * @return bool
      */
-    public function deleteDir($dirname)
+    public function deleteDirectory($dirname): void
     {
-        $this->api->delete_resources_by_prefix($dirname);
-        return true;
+        $this->api->delete_folder($dirname);
     }
     /**
      * Create a directory.
@@ -188,9 +167,9 @@ class CloudinaryAdapter implements AdapterInterface
      *
      * @return array|false
      */
-    public function createDir($dirname, Config $options)
+    public function createDirectory($dirname, Config $options): void
     {
-        return ['path' => $dirname];
+        $this->api->create_folder($dirname, (array) $options);
     }
     /**
      * Check whether a file exists.
@@ -204,7 +183,7 @@ class CloudinaryAdapter implements AdapterInterface
      *
      * @return array|bool|null
      */
-    public function has($path)
+    public function fileExists($path): bool
     {
         try {
             $this->api->resource($path);
@@ -220,10 +199,10 @@ class CloudinaryAdapter implements AdapterInterface
      *
      * @return array|false
      */
-    public function read($path)
+    public function read($path): string
     {
         $contents = file_get_contents(cloudinary_url($path));
-        return compact('contents', 'path');
+        return (string) $contents;
     }
     /**
      * Read a file as a stream.
@@ -234,8 +213,7 @@ class CloudinaryAdapter implements AdapterInterface
      */
     public function readStream($path)
     {
-        $stream = fopen(cloudinary_url($path), 'r');
-        return compact('stream', 'path');
+        return fopen(cloudinary_url($path), 'r');
     }
     /**
      * List contents of a directory.
@@ -245,7 +223,7 @@ class CloudinaryAdapter implements AdapterInterface
      *
      * @return array
      */
-    public function listContents($directory = '', $hasRecursive = false)
+    public function listContents($directory = '', $hasRecursive = false): iterable
     {
         $resources = [];
 
@@ -263,21 +241,16 @@ class CloudinaryAdapter implements AdapterInterface
 
         // parse resourses
         foreach ($resources as $i => $resource) {
-            $resources[$i] = $this->prepareResourceMetadata($resource);
+            //$resources[$i] = $this->prepareResourceMetadata($resource);
+            yield  $this->mapToObject($resource);
+            //
+
         }
-        return $resources;
+        //return $resources;
     }
-    /**
-     * Get all the meta data of a file or directory.
-     *
-     * @param string $path
-     *
-     * @return array|false
-     */
-    public function getMetadata($path)
-    {
-        return $this->prepareResourceMetadata($this->getResource($path));
-    }
+
+
+
     /**
      * Get Resource data
      * @param  string $path
@@ -294,9 +267,27 @@ class CloudinaryAdapter implements AdapterInterface
      *
      * @return array|false
      */
-    public function getSize($path)
+    public function fileSize($path): FileAttributes
     {
-        return $this->prepareSize($this->getResource($path));
+        return $this->fetchFileMetadata($path, FileAttributes::ATTRIBUTE_FILE_SIZE);
+    }
+
+    /**
+     * @param mixed $visibility
+     * @throws InvalidVisibilityProvided
+     * @throws FilesystemException
+     */
+    public function setVisibility(string $path, $visibility): void
+    {
+    }
+
+    /**
+     * @throws UnableToRetrieveMetadata
+     * @throws FilesystemException
+     */
+    public function visibility(string $path): FileAttributes
+    {
+        return $this->fetchFileMetadata($path, FileAttributes::ATTRIBUTE_VISIBILITY);
     }
     /**
      * Get the mimetype of a file.
@@ -308,9 +299,9 @@ class CloudinaryAdapter implements AdapterInterface
      *
      * @return array|false
      */
-    public function getMimetype($path)
+    public function mimetype($path): FileAttributes
     {
-        return $this->prepareMimetype($this->getResource($path));
+        return $this->fetchFileMetadata($path, FileAttributes::ATTRIBUTE_MIME_TYPE);
     }
     /**
      * Get the timestamp of a file.
@@ -319,69 +310,67 @@ class CloudinaryAdapter implements AdapterInterface
      *
      * @return array|false
      */
-    public function getTimestamp($path)
+    public function lastModified(string $path): FileAttributes
     {
-        return $this->prepareTimestamp($this->getResource($path));
+        return $this->fetchFileMetadata($path, FileAttributes::ATTRIBUTE_LAST_MODIFIED);
     }
+    
     /**
-     * Prepare apropriate metadata for resource metadata given from cloudinary.
-     * @param  array $resource
-     * @return array
+     * fetchFileMetadata get all attributes
+     *
+     * @param string $path
+     * @param string $type
+     * @return FileAttributes
      */
-    protected function prepareResourceMetadata($resource)
+    private function fetchFileMetadata(string $path, string $type): FileAttributes
     {
-        $resource['type'] = 'file';
-        $resource['path'] = $resource['public_id'];
-        $resource = array_merge($resource, $this->prepareSize($resource));
-        $resource = array_merge($resource, $this->prepareTimestamp($resource));
-        $resource = array_merge($resource, $this->prepareMimetype($resource));
-        return $resource;
-    }
-    /**
-     * prepare timestpamp response
-     * @param  array $resource
-     * @return array
-     */
-    protected function prepareMimetype($resource)
-    {
-        // hack
-        $mimetype = $resource['resource_type'] . '/' . $resource['format'];
-        $mimetype = str_replace('jpg', 'jpeg', $mimetype); // hack to a hack
-        return compact('mimetype');
-    }
-    /**
-     * prepare timestpamp response
-     * @param  array $resource
-     * @return array
-     */
-    protected function prepareTimestamp($resource)
-    {
-        $timestamp = strtotime($resource['created_at']);
-        return compact('timestamp');
-    }
-    /**
-     * prepare size response
-     * @param array $resource
-     * @return array
-     */
-    protected function prepareSize($resource)
-    {
-        $size = $resource['bytes'];
-        return compact('size');
+        try {
+            $result =  $this->getResource($path);
+        } catch (Throwable $exception) {
+            throw UnableToRetrieveMetadata::create($path, $type, '', $exception);
+        }
+        $attributes = $this->mapToObject($result, $path);
+
+        if (!$attributes instanceof FileAttributes) {
+            throw UnableToRetrieveMetadata::create($path, $type, '');
+        }
+        return $attributes;
     }
 
-    //  /**
-    //  * Get the URL of an image with optional transformation parameters
-    //  *
-    //  * @param  string|array $path
-    //  * @return string
-    //  */
-    // public function getUrl($path)
-    // {
-    //     if (is_array($path)) {
-    //         return cloudinary_url($path['public_id'], $path['options']);
-    //     }
-    //     return cloudinary_url($path);
-    // }
+    /**
+     * mapToObject map all attributes
+     *
+     * @param [type] $resource
+     * @return FileAttributes
+     */
+    private function mapToObject($resource): FileAttributes
+    {   
+        return new FileAttributes(
+            $resource['public_id'],
+            (int) $resource['bytes'],
+            'public',
+            (int) strtotime($resource['created_at']),
+            (string) sprintf('%s/%s', $resource['resource_type'] , $resource['format']),
+            $this->extractExtraMetadata((array) $resource)
+        );
+    }
+    
+    /**
+     * Undocumented function
+     *
+     * @param array $metadata
+     * @return array
+     */
+    private function extractExtraMetadata(array $metadata): array
+    {
+        $extracted = [];
 
+        foreach (static::EXTRA_METADATA_FIELDS as $field) {
+            if (isset($metadata[$field]) && $metadata[$field] !== '') {
+                $extracted[$field] = $metadata[$field];
+            }
+        }
+
+        return $extracted;
+    }
 }
