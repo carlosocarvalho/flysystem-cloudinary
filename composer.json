@@ -7,7 +7,7 @@
     "require": {
         "php": ">=7.2",
         "cloudinary/cloudinary_php": "^1.16",
-        "league/flysystem": "2.x-dev"
+        "league/flysystem": "^2.0"
         
     },
     "autoload": {
