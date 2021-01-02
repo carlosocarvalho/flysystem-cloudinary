@@ -6,7 +6,7 @@
     "homepage": "http://carlosocarvalho.github.io/flysystem-cloudinary",
     "require": {
         "php": ">=7.2",
-        "cloudinary/cloudinary_php": "^1.16",
+        "cloudinary/cloudinary_php": "^1.19",
         "league/flysystem": "^2.0"
         
     },

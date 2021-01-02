@@ -25,7 +25,7 @@ jobs:
       run: composer tdd
 
     - name: Coveralls Finished
-      uses: coverallsapp/github-action@feature/2.x
+      # uses: coverallsapp/github-action@feature/2.x
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         parallel-finished: true

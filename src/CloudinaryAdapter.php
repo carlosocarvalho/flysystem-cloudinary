@@ -73,7 +73,7 @@ class CloudinaryAdapter implements FilesystemAdapter
         $tempFile = tmpfile();
         fwrite($tempFile, $contents);
         // 2. Use Cloudinary to send
-        $uploadedMetadata = $this->writeStream($path, $tempFile, $options);
+        $this->writeStream($path, $tempFile, $options);
     }
     /**
      * Write a new file using a stream.
@@ -223,7 +223,7 @@ class CloudinaryAdapter implements FilesystemAdapter
      *
      * @return array
      */
-    public function listContents($directory = '', $hasRecursive = false): iterable
+    public function listContents(string $directory, bool $hasRecursive): iterable
     {
         $resources = [];
 
@@ -246,7 +246,7 @@ class CloudinaryAdapter implements FilesystemAdapter
             //
 
         }
-        //return $resources;
+        return $resources;
     }
 
 
