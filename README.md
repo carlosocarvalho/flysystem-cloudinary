@@ -14,6 +14,14 @@ Install
 ```bash
   composer require carlosocarvalho/flysystem-cloudinary
 ```
+
+Add the following keys to your .env file
+```bash
+API_KEY=
+API_SECRET=
+CLOUD_NAME=
+```
+
 Example
 
 ```php
@@ -41,4 +49,28 @@ $filesystem->listContents()
 ```
 
 ### For use in laravel
+
+To use in Laravel register you must register the driver. Learn <a href="https://github.com/carlosocarvalho/laravel-storage-cloudinary">how to register a custom filesystem</a> in the Laravel Documentation.
+
+```php
+
+    use Illuminate\Filesystem\FilesystemAdapter;
+    use Illuminate\Support\Facades\Storage;
+    use League\Flysystem\Filesystem;
+    use CarlosOCarvalho\Flysystem\Cloudinary\CloudinaryAdapter;
+
+    ...
+
+    Storage::extend('cloudinary', function ($app, $config) {
+        $adapter = new CloudinaryAdapter($config);
+
+        return new FilesystemAdapter(
+            new Filesystem($adapter, $config),
+            $adapter,
+            $config
+        );
+    });
+
+```
+
 <a href="https://github.com/carlosocarvalho/laravel-storage-cloudinary"> Access this repository </a>
