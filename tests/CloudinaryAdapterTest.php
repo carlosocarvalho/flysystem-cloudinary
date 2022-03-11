@@ -9,15 +9,14 @@ use League\Flysystem\Filesystem;
 use League\Flysystem\UnableToDeleteFile;
 use League\Flysystem\UnableToMoveFile;
 use League\Flysystem\UnableToRetrieveMetadata;
+use League\Flysystem\UnableToSetVisibility;
 
 class CloudinaryAdapterTest extends ApplicationCase
 {
 
-    
+
     protected function tearDown(): void
     {
-        
-
         $adapter = $this->adapter();
         /** @var StorageAttributes[] $listing */
         $listing = $adapter->listContents(self::ROOT, false);
@@ -29,11 +28,10 @@ class CloudinaryAdapterTest extends ApplicationCase
                 $adapter->deleteDirectory($item->path());
             }
         }
-
     }
 
 
-    
+
     /**
      * Validate instance type is Class Core
      * @return void
@@ -46,13 +44,14 @@ class CloudinaryAdapterTest extends ApplicationCase
 
     /**
      * @test
-     * Upload success file on api 
+     * Upload success file on api
      * @return void
      */
     public function create_and_check_size_and_check_type()
     {
         $adapter = $this->adapter();
         $id = $this->makePathFile(sprintf('%s', $this->imageName()));
+
         $adapter->write($id, $this->getContentFile());
         $this->assertEquals(filesize(self::IMAGE), $adapter->fileSize($id));
         $this->assertEquals('image/png', $adapter->mimeType($id));
@@ -60,7 +59,7 @@ class CloudinaryAdapterTest extends ApplicationCase
 
     /**
      * @test
-     * Upload success file on api 
+     * Upload success file on api
      * @return void
      */
     public function create_and_moving_and_failure()
@@ -117,6 +116,7 @@ class CloudinaryAdapterTest extends ApplicationCase
         $adapter->move($id, $renamedId);
         $this->assertTrue($adapter->fileExists($renamedId));
     }
+
     /**
      * @test
      * DeleteFile remove file by id registered
@@ -143,9 +143,10 @@ class CloudinaryAdapterTest extends ApplicationCase
         $id = $this->makePathFile(sprintf('no-exist-delete-%s', $this->imageName()));
         $adapter->delete($id);
     }
+
     /**
      * @test
-     * CopyFile  
+     * CopyFile
      * @return void
      */
     public function copy_file()
@@ -199,14 +200,16 @@ class CloudinaryAdapterTest extends ApplicationCase
         }
         $adapter->deleteDirectory($folder);
     }
-    
+
     /**
      * @test
      *
      * @return void
      */
-    public function create_and_check_visibility(){
-       
+    public function create_and_check_visibility()
+    {
+        $this->expectException(UnableToSetVisibility::class);
+
         $adapter = $this->adapter();
         $content = fopen(self::IMAGE_UPDATE,'r');
         $id = $this->makePathFile(sprintf('file-visibility-%s', $this->imageName()));

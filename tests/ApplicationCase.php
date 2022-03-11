@@ -11,8 +11,6 @@ use CarlosOCarvalho\Flysystem\Cloudinary\CloudinaryAdapter as Adapter;
 use League\Flysystem\Filesystem;
 use PHPUnit\Framework\TestCase;
 
-
-
 class ApplicationCase extends TestCase
 {
 
@@ -29,6 +27,12 @@ class ApplicationCase extends TestCase
      * @var Filesystem
      */
     private $adapter;
+
+    public static function setUpBeforeClass(): void
+    {
+        $dotenv = \Dotenv\Dotenv::createImmutable(__DIR__,'../.env');
+        $dotenv->load();
+    }
 
     public function imageName(): string
     {
@@ -50,15 +54,15 @@ class ApplicationCase extends TestCase
 
     protected function createFilesystemAdapter()
     {
-        return   new Filesystem($this->createCloudinaryInstance());
+        return  new Filesystem($this->createCloudinaryInstance());
     }
 
     protected function createCloudinaryInstance()
     {
         self::$config = [
-            'api_key' => '788386319666942',
-            'api_secret' => 'Uu1UjdDROM4m6lq80l7-9Zqt8Mg',
-            'cloud_name' => 'carlosocarvalho',
+            'api_key' => $_ENV['API_KEY'],
+            'api_secret' => $_ENV['API_SECRET'],
+            'cloud_name' => $_ENV['CLOUD_NAME'],
             "secure_distribution" => null,
             "private_cdn" => false,
             "cname" => null
@@ -66,7 +70,7 @@ class ApplicationCase extends TestCase
 
         return new Adapter(self::$config);
     }
-    
+
 
     protected function makePathFile($file): string
     {
