@@ -60,12 +60,14 @@ class ApplicationCase extends TestCase
     protected function createCloudinaryInstance()
     {
         self::$config = [
-            'api_key' => $_ENV['API_KEY'],
-            'api_secret' => $_ENV['API_SECRET'],
-            'cloud_name' => $_ENV['CLOUD_NAME'],
-            "secure_distribution" => null,
-            "private_cdn" => false,
-            "cname" => null
+            'cloud' => [
+                'api_key' => $_ENV['API_KEY'],
+                'api_secret' => $_ENV['API_SECRET'],
+                'cloud_name' => $_ENV['CLOUD_NAME'],
+            ],
+            'url' => [
+                'secure' => true
+            ]
         ];
 
         return new Adapter(self::$config);
