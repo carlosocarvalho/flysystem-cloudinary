@@ -29,8 +29,8 @@ https://cloudinary.com/documentation/php_integration#setting_the_cloudinary_url_
 use CarlosOCarvalho\Flysystem\Cloudinary\CloudinaryAdapter;
 use League\Flysystem\Filesystem;
 
-$container = new CloudinaryAdapter();
-$filesystem = new Filesystem( $container );
+$adapter = new CloudinaryAdapter();
+$filesystem = new Filesystem( $adapter );
 
 ```
 
@@ -47,8 +47,8 @@ $config = [
     'cloud_name' => ':name',
 ];
 
-$container = new CloudinaryAdapter($config);
-$filesystem = new Filesystem( $container );
+$adapter = new CloudinaryAdapter($config);
+$filesystem = new Filesystem( $adapter );
 
 ```
 
