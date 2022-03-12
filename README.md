@@ -1,5 +1,5 @@
-# flysystem-cloudinary V2
-Adapter for theleague php flysystem for Cloudin
+# flysystem-cloudinary v3
+Cloudinary adapter for The PHP League Flysystem v3
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/40851dce873643d4b8c4f720694237da)](https://app.codacy.com/app/carlosocarvalho-git/flysystem-cloudinary?utm_source=github.com&utm_medium=referral&utm_content=carlosocarvalho/flysystem-cloudinary&utm_campaign=Badge_Grade_Dashboard)
 [![Author](https://img.shields.io/badge/autor-@carlosocarvalho-blue.svg?style=flat-square)](https://twitter.com/carlosocarvalho)
@@ -9,20 +9,22 @@ Adapter for theleague php flysystem for Cloudin
 [![composer.lock](https://poser.pugx.org/carlosocarvalho/flysystem-cloudinary/composerlock)](//packagist.org/packages/carlosocarvalho/flysystem-cloudinary)
 [![Monthly Downloads](https://poser.pugx.org/carlosocarvalho/flysystem-cloudinary/d/monthly)](//packagist.org/packages/carlosocarvalho/flysystem-cloudinary)
 
-Install
+## Install
 
 ```bash
   composer require carlosocarvalho/flysystem-cloudinary
 ```
 
-Add the following keys to your .env file
-```bash
-API_KEY=
-API_SECRET=
-CLOUD_NAME=
-```
+## Configuration
 
-Example
+You can configure the package in two different ways. 
+
+### Using CLOUDINARY_URL
+You can configure the library using the environment variable ```bash CLOUDINARY_URL ```. 
+
+https://cloudinary.com/documentation/php_integration#setting_the_cloudinary_url_environment_variable
+
+### Manual configuration
 
 ```php
 
@@ -39,6 +41,8 @@ $container = new Adapter($config);
 $filesystem = new League\Flysystem\Filesystem( $container );
 
 ```
+
+## Example
 
 ## List contents and others actions use Filesystem api
 
