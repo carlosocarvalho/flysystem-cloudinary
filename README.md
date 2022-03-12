@@ -20,7 +20,7 @@ Cloudinary adapter for The PHP League Flysystem v3
 You can configure the package in two different ways. 
 
 ### Using CLOUDINARY_URL
-You can configure the library using the environment variable ```bash CLOUDINARY_URL ```. 
+You can configure the library using the environment variable ```CLOUDINARY_URL```. Whe using ```CLOUDINARY_URL``` you have access to the underlying Cloudinary SDK without instantiating the adapter or explicit instantiating the Cloudinary SDK.
 
 https://cloudinary.com/documentation/php_integration#setting_the_cloudinary_url_environment_variable
 
