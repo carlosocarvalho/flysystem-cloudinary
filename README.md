@@ -24,11 +24,22 @@ You can configure the library using the environment variable ```bash CLOUDINARY_
 
 https://cloudinary.com/documentation/php_integration#setting_the_cloudinary_url_environment_variable
 
+```php
+
+use CarlosOCarvalho\Flysystem\Cloudinary\CloudinaryAdapter;
+use League\Flysystem\Filesystem;
+
+$container = new CloudinaryAdapter();
+$filesystem = new Filesystem( $container );
+
+```
+
 ### Manual configuration
 
 ```php
 
-use CarlosOCarvalho\Flysystem\Cloudinary\CloudinaryAdapter as Adapter;
+use CarlosOCarvalho\Flysystem\Cloudinary\CloudinaryAdapter;
+use League\Flysystem\Filesystem;
 
 $config = [
     'api_key' => ':key',
@@ -36,15 +47,14 @@ $config = [
     'cloud_name' => ':name',
 ];
 
-$container = new Adapter($config);
-
-$filesystem = new League\Flysystem\Filesystem( $container );
+$container = new CloudinaryAdapter($config);
+$filesystem = new Filesystem( $container );
 
 ```
 
 ## Example
 
-## List contents and others actions use Filesystem api
+### List contents and others actions use Filesystem api
 
 ```php
 
