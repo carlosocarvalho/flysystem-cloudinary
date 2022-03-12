@@ -63,21 +63,11 @@ class CloudinaryAdapter implements FilesystemAdapter
      * @param array $options Cloudinary configuration
      * @param Api   $api    Cloudinary Api instance
      */
-    public function __construct(array $options)
+    public function __construct(array $options = null)
     {
-        Configuration::instance([
-            'cloud' => [
-                'cloud_name' => $options['cloud_name'],
-                'api_key' => $options['api_key'],
-                'api_secret' => $options['api_secret']
-            ],
-            'url' => [
-                'secure' => true
-            ]
-        ]);
-
-        $this->adminApi = new AdminApi();
-        $this->uploadApi = new UploadApi();
+        Configuration::instance($options);
+        $this->adminApi = new AdminApi($options);
+        $this->uploadApi = new UploadApi($options);
     }
     /**
      * Write a new file.
@@ -148,8 +138,6 @@ class CloudinaryAdapter implements FilesystemAdapter
     {
         try {
             $this->uploadApi->rename($source, $destination);
-            // $this->copy($source, $destination, $config);
-            // $this->delete($source);
         } catch (NotFound $exception) {
             throw UnableToMoveFile::fromLocationTo($source, $destination, $exception);
         }
@@ -389,7 +377,7 @@ class CloudinaryAdapter implements FilesystemAdapter
             $response = $this->adminApi->asset($path);
             return $response['secure_url'];
         } catch (NotFound $exception) {
-            throw UnableToReadFile::fromLocation($path, null, $exception);
+            return '';
         }
     }
 
