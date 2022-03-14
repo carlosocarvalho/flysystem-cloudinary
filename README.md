@@ -76,7 +76,11 @@ To use in Laravel register you must register the driver. Learn <a href="https://
     ...
 
     Storage::extend('cloudinary', function ($app, $config) {
-        $adapter = new CloudinaryAdapter($config);
+        if(!empty(env('CLOUDINARY_URL'))){
+            $adapter = new CloudinaryAdapter();
+        }else{
+            $adapter = new CloudinaryAdapter($config);
+        }
 
         return new FilesystemAdapter(
             new Filesystem($adapter, $config),
