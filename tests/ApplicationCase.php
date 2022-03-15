@@ -30,8 +30,12 @@ class ApplicationCase extends TestCase
 
     public static function setUpBeforeClass(): void
     {
-        $dotenv = \Dotenv\Dotenv::createImmutable(__DIR__,'../.env');
-        $dotenv->load();
+        try {
+            $dotenv = \Dotenv\Dotenv::createImmutable(__DIR__,'../.env');
+            $dotenv->load();
+        } catch (\Dotenv\Exception\InvalidPathException $e) {
+            //
+        }
     }
 
     public function imageName(): string
