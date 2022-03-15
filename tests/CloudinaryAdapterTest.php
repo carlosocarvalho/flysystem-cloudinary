@@ -30,8 +30,6 @@ class CloudinaryAdapterTest extends ApplicationCase
         }
     }
 
-
-
     /**
      * Validate instance type is Class Core
      * @return void

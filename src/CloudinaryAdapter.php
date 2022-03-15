@@ -25,8 +25,6 @@ use League\Flysystem\UnableToRetrieveMetadata;
 use League\Flysystem\UnableToSetVisibility;
 use Throwable;
 
-//LOLZE
-
 /**
  *
  */
@@ -112,7 +110,6 @@ class CloudinaryAdapter implements FilesystemAdapter
             ]
         );
     }
-
 
     /**
      * Copy a file.
@@ -298,8 +295,6 @@ class CloudinaryAdapter implements FilesystemAdapter
         return $resources;
     }
 
-
-
     /**
      * Get Resource data
      * @param  string $path
@@ -309,6 +304,7 @@ class CloudinaryAdapter implements FilesystemAdapter
     {
         return (array) $this->adminApi->asset($path);
     }
+
     /**
      * Get all the meta data of a file or directory.
      *
@@ -400,6 +396,7 @@ class CloudinaryAdapter implements FilesystemAdapter
         if (!$attributes instanceof FileAttributes) {
             throw UnableToRetrieveMetadata::create($path, $type, '');
         }
+
         return $attributes;
     }
 
