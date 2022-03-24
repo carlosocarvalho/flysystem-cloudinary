@@ -25,8 +25,6 @@ use League\Flysystem\UnableToRetrieveMetadata;
 use League\Flysystem\UnableToSetVisibility;
 use Throwable;
 
-//LOLZE
-
 /**
  *
  */
@@ -63,21 +61,11 @@ class CloudinaryAdapter implements FilesystemAdapter
      * @param array $options Cloudinary configuration
      * @param Api   $api    Cloudinary Api instance
      */
-    public function __construct(array $options)
+    public function __construct(array $options = null)
     {
-        Configuration::instance([
-            'cloud' => [
-                'cloud_name' => $options['cloud_name'],
-                'api_key' => $options['api_key'],
-                'api_secret' => $options['api_secret']
-            ],
-            'url' => [
-                'secure' => true
-            ]
-        ]);
-
-        $this->adminApi = new AdminApi();
-        $this->uploadApi = new UploadApi();
+        Configuration::instance($options);
+        $this->adminApi = new AdminApi($options);
+        $this->uploadApi = new UploadApi($options);
     }
     /**
      * Write a new file.
@@ -123,7 +111,6 @@ class CloudinaryAdapter implements FilesystemAdapter
         );
     }
 
-
     /**
      * Copy a file.
      * Copy content from existing url.
@@ -148,8 +135,6 @@ class CloudinaryAdapter implements FilesystemAdapter
     {
         try {
             $this->uploadApi->rename($source, $destination);
-            // $this->copy($source, $destination, $config);
-            // $this->delete($source);
         } catch (NotFound $exception) {
             throw UnableToMoveFile::fromLocationTo($source, $destination, $exception);
         }
@@ -310,8 +295,6 @@ class CloudinaryAdapter implements FilesystemAdapter
         return $resources;
     }
 
-
-
     /**
      * Get Resource data
      * @param  string $path
@@ -321,6 +304,7 @@ class CloudinaryAdapter implements FilesystemAdapter
     {
         return (array) $this->adminApi->asset($path);
     }
+
     /**
      * Get all the meta data of a file or directory.
      *
@@ -389,7 +373,7 @@ class CloudinaryAdapter implements FilesystemAdapter
             $response = $this->adminApi->asset($path);
             return $response['secure_url'];
         } catch (NotFound $exception) {
-            throw UnableToReadFile::fromLocation($path, null, $exception);
+            return '';
         }
     }
 
@@ -412,6 +396,7 @@ class CloudinaryAdapter implements FilesystemAdapter
         if (!$attributes instanceof FileAttributes) {
             throw UnableToRetrieveMetadata::create($path, $type, '');
         }
+
         return $attributes;
     }
 

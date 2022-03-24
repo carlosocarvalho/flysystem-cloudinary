@@ -30,8 +30,12 @@ class ApplicationCase extends TestCase
 
     public static function setUpBeforeClass(): void
     {
-        $dotenv = \Dotenv\Dotenv::createImmutable(__DIR__,'../.env');
-        $dotenv->load();
+        try {
+            $dotenv = \Dotenv\Dotenv::createImmutable(__DIR__,'../.env');
+            $dotenv->load();
+        } catch (\Dotenv\Exception\InvalidPathException $e) {
+            //
+        }
     }
 
     public function imageName(): string
@@ -59,16 +63,24 @@ class ApplicationCase extends TestCase
 
     protected function createCloudinaryInstance()
     {
-        self::$config = [
-            'api_key' => $_ENV['API_KEY'],
-            'api_secret' => $_ENV['API_SECRET'],
-            'cloud_name' => $_ENV['CLOUD_NAME'],
-            "secure_distribution" => null,
-            "private_cdn" => false,
-            "cname" => null
-        ];
 
-        return new Adapter(self::$config);
+        if(empty($_ENV['CLOUDINARY_URL'])){
+
+            self::$config = [
+                'cloud' => [
+                    'api_key' => $_ENV['API_KEY'] ?? '788386319666942',
+                    'api_secret' => $_ENV['API_SECRET'] ?? 'Uu1UjdDROM4m6lq80l7-9Zqt8Mg',
+                    'cloud_name' => $_ENV['CLOUD_NAME'] ?? 'carlosocarvalho',
+                ],
+                'url' => [
+                    'secure' => true
+                ]
+            ];
+
+            return new Adapter(self::$config);    
+        }     
+
+        return new Adapter();
     }
 
 
