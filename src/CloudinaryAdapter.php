@@ -100,11 +100,13 @@ class CloudinaryAdapter implements FilesystemAdapter
     {
         $public_id = $options->get('public_id', $path);
         $resource_type = $options->get('resource_type', 'auto');
+        $upload_options = $options->get('upload_options', []);
         $resourceMetadata = stream_get_meta_data($resource);
 
         $uploadedMetadata = $this->uploadApi->upload(
             $resourceMetadata['uri'],
             [
+                ...$upload_options,
                 'public_id' => $public_id,
                 'resource_type' => $resource_type,
             ]
