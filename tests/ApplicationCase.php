@@ -8,6 +8,7 @@ include_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ .'/Helpers.php';
 
 use CarlosOCarvalho\Flysystem\Cloudinary\CloudinaryAdapter as Adapter;
+use CarlosOCarvalho\Flysystem\Cloudinary\Converter\TruncateExtensionPathConverter;
 use League\Flysystem\Filesystem;
 use PHPUnit\Framework\TestCase;
 
@@ -77,8 +78,8 @@ class ApplicationCase extends TestCase
                 ]
             ];
 
-            return new Adapter(self::$config);    
-        }     
+            return new Adapter(self::$config, new TruncateExtensionPathConverter());
+        }
 
         return new Adapter();
     }

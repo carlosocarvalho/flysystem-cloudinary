@@ -2,10 +2,8 @@
 
 namespace CarlosOCarvalho\Flysystem\Cloudinary;
 
-use CarlosOCarvalho\Flysystem\Cloudinary\CloudinaryAdapter as Adapter;
 use CarlosOCarvalho\Flysystem\Cloudinary\Test\ApplicationCase;
-use League\Flysystem\FileAttributes;
-use League\Flysystem\Filesystem;
+use League\Flysystem\StorageAttributes;
 use League\Flysystem\UnableToDeleteFile;
 use League\Flysystem\UnableToMoveFile;
 use League\Flysystem\UnableToRetrieveMetadata;
@@ -164,7 +162,7 @@ class CloudinaryAdapterTest extends ApplicationCase
      */
     public function writing_and_reading_with_streams(): void
     {
-        $writeStream = fopen(self::IMAGE, 'r');
+        $writeStream = fopen(self::IMAGE, 'rb');
         $id = $this->makePathFile(sprintf('file-stream-%s', $this->imageName()));
         $adapter = $this->adapter();
         $adapter->writeStream($id, $writeStream);
@@ -185,7 +183,7 @@ class CloudinaryAdapterTest extends ApplicationCase
         $adapter = $this->adapter();
         $folder = 'folder_for_delete';
         $adapter->createDirectory($folder);
-        $writeStream = fopen(self::IMAGE, 'r');
+        $writeStream = fopen(self::IMAGE, 'rb');
         $id = sprintf('%s/%s', $folder, $this->imageName());
         $adapter = $this->adapter();
         $adapter->writeStream($id, $writeStream);
@@ -209,7 +207,7 @@ class CloudinaryAdapterTest extends ApplicationCase
         $this->expectException(UnableToSetVisibility::class);
 
         $adapter = $this->adapter();
-        $content = fopen(self::IMAGE_UPDATE,'r');
+        $content = fopen(self::IMAGE_UPDATE,'rb');
         $id = $this->makePathFile(sprintf('file-visibility-%s', $this->imageName()));
         $adapter->writeStream($id, $content);
         fclose($content);
@@ -235,7 +233,7 @@ class CloudinaryAdapterTest extends ApplicationCase
     public function fetching_last_modified(): void
     {
         $adapter = $this->adapter();
-        $content = fopen(self::IMAGE_UPDATE,'r');
+        $content = fopen(self::IMAGE_UPDATE,'rb');
         $id = $this->makePathFile(sprintf('file-visibility-%s', $this->imageName()));
         $adapter->writeStream($id, $content);
         fclose($content);
