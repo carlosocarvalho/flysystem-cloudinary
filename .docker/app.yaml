@@ -1,0 +1,12 @@
+version: "3.7"
+services:
+  app:
+    image: webdevops/php-nginx-dev:8.2-alpine
+    working_dir: /app/
+    volumes: 
+      - ../:/app/
+    # command: >
+    #     /bin/bash -c "
+    #     a2enmod proxy_http &&
+    #     a2enmod proxy &&
+    #     supervisord"

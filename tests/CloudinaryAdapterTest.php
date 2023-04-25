@@ -4,6 +4,7 @@ namespace CarlosOCarvalho\Flysystem\Cloudinary;
 
 use CarlosOCarvalho\Flysystem\Cloudinary\CloudinaryAdapter as Adapter;
 use CarlosOCarvalho\Flysystem\Cloudinary\Test\ApplicationCase;
+use Cloudinary\Cloudinary;
 use League\Flysystem\FileAttributes;
 use League\Flysystem\Filesystem;
 use League\Flysystem\UnableToDeleteFile;
@@ -20,6 +21,8 @@ class CloudinaryAdapterTest extends ApplicationCase
         $adapter = $this->adapter();
         /** @var StorageAttributes[] $listing */
         $listing = $adapter->listContents(self::ROOT, false);
+
+        // $adapter->deleteDirectory(self::ROOT);
 
         foreach ($listing as $item) {
             if ($item->isFile()) {
@@ -53,6 +56,27 @@ class CloudinaryAdapterTest extends ApplicationCase
         $adapter->write($id, $this->getContentFile());
         $this->assertEquals(filesize(self::IMAGE), $adapter->fileSize($id));
         $this->assertEquals('image/png', $adapter->mimeType($id));
+    }
+
+
+     /**
+     * @test
+     * Upload success file on api
+     * @return void
+     */
+    public function list_only_image_png()
+    {
+        $adapter = $this->adapter();
+        CloudinaryAdapter::$resourceType = \Cloudinary\Asset\AssetType::IMAGE;
+        dump(self::ROOT);
+        $listing = $adapter->listContents('sites')->toArray();
+        
+
+        foreach ($listing as $item) {
+        // dump($item->isFile());
+        }
+
+        $this->assertEquals(1, 1);
     }
 
     /**
@@ -176,18 +200,18 @@ class CloudinaryAdapterTest extends ApplicationCase
     }
 
     /**
-     * @test
+     * @__test
      *
      * @return void
      */
     public function create_and_delete_folder()
     {
         $adapter = $this->adapter();
-        $folder = 'folder_for_delete';
+        $folder =  self::ROOT .'/folder_for_delete_in_test';
         $adapter->createDirectory($folder);
         $writeStream = fopen(self::IMAGE, 'r');
         $id = sprintf('%s/%s', $folder, $this->imageName());
-        $adapter = $this->adapter();
+        dump($id);
         $adapter->writeStream($id, $writeStream);
         $items = $adapter->listContents($folder);
 

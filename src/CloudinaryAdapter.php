@@ -43,6 +43,13 @@ class CloudinaryAdapter implements FilesystemAdapter
 
     private $visibility;
 
+    /** 
+     * 
+     * @var \Cloudinary\Asset\AssetType::IMAGE|\Cloudinary\Asset\AssetType::VIDEO
+     */
+    static $resourceType = 'image';
+
+
     private const EXTRA_METADATA_FIELDS = [
         'version',
         'width',
@@ -277,8 +284,9 @@ class CloudinaryAdapter implements FilesystemAdapter
         $response = null;
         do {
             $response = (array) $this->adminApi->assets([
-                'type' => 'upload',
+               'type' => 'list',
                 'prefix' => $directory,
+                'resource_type' => CloudinaryAdapter::$resourceType,
                 'max_results' => 500,
                 'next_cursor' => isset($response['next_cursor']) ? $response['next_cursor'] : null,
             ]);
@@ -349,6 +357,8 @@ class CloudinaryAdapter implements FilesystemAdapter
     {
         return $this->fetchFileMetadata($path, FileAttributes::ATTRIBUTE_MIME_TYPE);
     }
+
+
     /**
      * Get the timestamp of a file.
      *
@@ -413,7 +423,7 @@ class CloudinaryAdapter implements FilesystemAdapter
             (int) $resource['bytes'],
             'public',
             (int) strtotime($resource['created_at']),
-            (string) sprintf('%s/%s', $resource['resource_type'] , $resource['format']),
+            (string) sprintf('%s/%s', $resource['resource_type'], $resource['format']),
             $this->extractExtraMetadata((array) $resource)
         );
     }

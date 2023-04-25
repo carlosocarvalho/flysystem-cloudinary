@@ -45,7 +45,7 @@ class ApplicationCase extends TestCase
 
     public function adapter(): Filesystem
     {
-        if (!$this->adapter instanceof Filesystem) {
+        if (!$this->adapter) {
             $this->adapter = $this->createFilesystemAdapter();
         }
         return $this->adapter;
@@ -65,7 +65,7 @@ class ApplicationCase extends TestCase
     {
 
         if(empty($_ENV['CLOUDINARY_URL'])){
-
+     
             self::$config = [
                 'cloud' => [
                     'api_key' => $_ENV['API_KEY'] ?? '788386319666942',

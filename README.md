@@ -58,9 +58,27 @@ $filesystem = new Filesystem( $adapter );
 
 ```php
 
+#Options use file type resource
+
+
+
+
+
 $filesystem->listContents()
 
 ```
+
+### Add Resource Type list in container `image`,`video`, `raw`
+
+```php
+
+
+
+CloudinaryAdapter::$resourceType = \Cloudinary\Asset\AssetType::IMAGE;
+$filesystem->listContents()
+
+```
+
 
 ### For use in laravel
 
