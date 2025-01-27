@@ -107,6 +107,7 @@ class CloudinaryAdapter implements FilesystemAdapter
     {
         $public_id = $options->get('public_id', $path);
         $resource_type = $options->get('resource_type', 'auto');
+        $format = $options->get('format', null);
         $resourceMetadata = stream_get_meta_data($resource);
 
         $uploadedMetadata = $this->uploadApi->upload(
@@ -114,6 +115,7 @@ class CloudinaryAdapter implements FilesystemAdapter
             [
                 'public_id' => $public_id,
                 'resource_type' => $resource_type,
+                'format' => $format
             ]
         );
     }
