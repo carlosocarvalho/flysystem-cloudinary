@@ -2,7 +2,6 @@
 
 namespace CarlosOCarvalho\Flysystem\Cloudinary;
 
-use Cloudinary\Asset\DeliveryType;
 use Exception;
 use Cloudinary\Cloudinary;
 use Cloudinary\Api as Api;
@@ -12,16 +11,12 @@ use Cloudinary\Asset\Media;
 use Cloudinary\Configuration\Configuration;
 use Cloudinary\Api\Exception\NotFound;
 use League\Flysystem\Config;
-use League\Flysystem\AdapterInterface;
 use League\Flysystem\FileAttributes;
 // use League\Flysystem\Adapter\Polyfill\NotSupportingVisibilityTrait;
-use League\Flysystem\FileNotFoundException;
 use League\Flysystem\FilesystemAdapter;
-use League\Flysystem\FilesystemOperationFailed;
 use League\Flysystem\UnableToCopyFile;
 use League\Flysystem\UnableToDeleteFile;
 use League\Flysystem\UnableToMoveFile;
-use League\Flysystem\UnableToReadFile;
 use League\Flysystem\UnableToRetrieveMetadata;
 use League\Flysystem\UnableToSetVisibility;
 use Throwable;
