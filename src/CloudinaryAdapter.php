@@ -2,6 +2,7 @@
 
 namespace CarlosOCarvalho\Flysystem\Cloudinary;
 
+use Cloudinary\Asset\DeliveryType;
 use Exception;
 use Cloudinary\Cloudinary;
 use Cloudinary\Api as Api;
@@ -49,6 +50,10 @@ class CloudinaryAdapter implements FilesystemAdapter
      */
     static $resourceType = 'image';
 
+    /**
+     * @var \Cloudinary\Asset\DeliveryType::*
+     */
+    public static string $listContentsType = 'list';
 
     private const EXTRA_METADATA_FIELDS = [
         'version',
@@ -286,7 +291,7 @@ class CloudinaryAdapter implements FilesystemAdapter
         $response = null;
         do {
             $response = (array) $this->adminApi->assets([
-               'type' => 'list',
+               'type' => CloudinaryAdapter::$listContentsType,
                 'prefix' => $directory,
                 'resource_type' => CloudinaryAdapter::$resourceType,
                 'max_results' => 500,

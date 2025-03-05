@@ -79,6 +79,13 @@ $filesystem->listContents()
 
 ```
 
+### Add content list type in container 'upload', 'private', 'authenticated', 'fetch', 'facebook', 'twitter', 'gravatar', 'youtube', 'hulu', 'vimeo', 'animoto', 'worldstarhiphop', 'dailymotion', 'list'
+
+```php
+CloudinaryAdapter::$listContentsType = \Cloudinary\Asset\DeliveryType::UPLOAD;
+$filesystem->listContents()
+```
+
 
 ### For use in laravel
 
