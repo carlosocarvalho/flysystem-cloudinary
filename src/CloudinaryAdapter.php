@@ -11,16 +11,12 @@ use Cloudinary\Asset\Media;
 use Cloudinary\Configuration\Configuration;
 use Cloudinary\Api\Exception\NotFound;
 use League\Flysystem\Config;
-use League\Flysystem\AdapterInterface;
 use League\Flysystem\FileAttributes;
 // use League\Flysystem\Adapter\Polyfill\NotSupportingVisibilityTrait;
-use League\Flysystem\FileNotFoundException;
 use League\Flysystem\FilesystemAdapter;
-use League\Flysystem\FilesystemOperationFailed;
 use League\Flysystem\UnableToCopyFile;
 use League\Flysystem\UnableToDeleteFile;
 use League\Flysystem\UnableToMoveFile;
-use League\Flysystem\UnableToReadFile;
 use League\Flysystem\UnableToRetrieveMetadata;
 use League\Flysystem\UnableToSetVisibility;
 use Throwable;
@@ -49,6 +45,10 @@ class CloudinaryAdapter implements FilesystemAdapter
      */
     static $resourceType = 'image';
 
+    /**
+     * @var \Cloudinary\Asset\DeliveryType::*
+     */
+    public static string $listContentsType = 'list';
 
     private const EXTRA_METADATA_FIELDS = [
         'version',
@@ -286,7 +286,7 @@ class CloudinaryAdapter implements FilesystemAdapter
         $response = null;
         do {
             $response = (array) $this->adminApi->assets([
-               'type' => 'list',
+               'type' => CloudinaryAdapter::$listContentsType,
                 'prefix' => $directory,
                 'resource_type' => CloudinaryAdapter::$resourceType,
                 'max_results' => 500,
