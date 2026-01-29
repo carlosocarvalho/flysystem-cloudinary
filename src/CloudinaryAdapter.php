@@ -68,7 +68,7 @@ class CloudinaryAdapter implements FilesystemAdapter
 	 * @param array $options Cloudinary configuration
 	 * @param Api   $api    Cloudinary Api instance
 	 */
-	public function __construct(array $options = null)
+	public function __construct(?array $options = null)
 	{
 		Configuration::instance($options);
 		$this->adminApi = new AdminApi($options);
